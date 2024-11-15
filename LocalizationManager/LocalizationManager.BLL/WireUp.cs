@@ -8,7 +8,7 @@ public static class WireUp
 {
     public static void ConfigureAuthenticationService(this IServiceCollection services)
     {
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IAuthService, AuthService>();
     }
 
     public static void ConfigureLocalizationService(this IServiceCollection services)
