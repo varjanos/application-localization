@@ -27,6 +27,7 @@ builder.Services.AddControllers();
 
 builder.Services.ConfigureAuthenticationService();
 builder.Services.ConfigureLocalizationService();
+builder.Services.ConfigureLanguageService();
 
 var app = builder.Build();
 
