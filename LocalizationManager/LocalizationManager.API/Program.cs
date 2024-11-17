@@ -9,9 +9,12 @@ using Microsoft.Extensions.Primitives;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddOpenApiDocument(configure =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "LocalizationManager API", Version = "v1" });
+    configure.Title = "LocalizationManager API";
 });
 
 builder.Services.ConfigureLocalizationDb(builder.Configuration.GetConnectionString("DefaultConnection")!);

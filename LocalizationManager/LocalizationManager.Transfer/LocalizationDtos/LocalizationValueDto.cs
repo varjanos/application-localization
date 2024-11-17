@@ -1,4 +1,4 @@
-﻿namespace LocalizationManager.BLL.Model;
+﻿namespace LocalizationManager.Transfer.LocalizationDtos;
 
 public class LocalizationValueDto
 {

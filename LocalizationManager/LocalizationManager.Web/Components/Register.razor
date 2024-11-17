@@ -1,0 +1,37 @@
+﻿@using LocalizationManager.Transfer.AuthDtos
+@using LocalizationManager.Web.Services
+
+@inject IAuthService authService
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Class="pa-4" Elevation="0">
+            <MudForm ReadOnly="false" Model="registerModel">
+                <MudTextField T="string" @bind-Value="registerModel.Username" Label="Username" Required="true" RequiredError="User name is required!" />
+                <MudTextField T="string" @bind-Value="registerModel.Email" Label="Email" Required="true" RequiredError="Email is required!" InputType="InputType.Email" />
+                <MudTextField T="string" @bind-Value="registerModel.Password" Label="Password" HelperText="Choose a strong password"
+                              InputType="InputType.Password" Required="true" RequiredError="Password is required!" />
+
+                <div class="row mt-3">
+                    <MudButton Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" Class="ml-auto w-100" OnClick=HandleRegistrationAsync>
+                        Register
+                    </MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance dialogReference { get; set; }
+
+    private RegisterDto registerModel = new();
+
+    private async Task HandleRegistrationAsync()
+    {
+        await authService.RegisterAsync(registerModel);
+
+        dialogReference.Close(DialogResult.Ok(true));
+    }
+}

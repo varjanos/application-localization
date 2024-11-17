@@ -1,0 +1,39 @@
+﻿@using LocalizationManager.Transfer.AuthDtos
+@using LocalizationManager.Web.Services
+
+@inject IAuthService authService
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Class="pa-4" Elevation="0">
+            <MudForm ReadOnly="false" Model="loginModel">
+                <div class="mb-3">
+                    <MudTextField T="string" @bind-Value="loginModel.Username" Label="Username" Required="true" RequiredError="User name is required!" />
+                </div>
+                <div class="mb-3">
+                    <MudTextField T="string" @bind-Value="loginModel.Password" Label="Password"
+                                  InputType="InputType.Password" Required="true" RequiredError="Password is required!" />
+                </div>
+
+                <div class="row mt-3">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="ml-auto" OnClick=HandleLoginAsync>
+                        Login
+                    </MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance dialogReference { get; set; }
+
+    private LoginDto loginModel = new LoginDto();
+
+    private async Task HandleLoginAsync()
+    {
+        await authService.LoginAsync(loginModel);
+
+        dialogReference.Close(DialogResult.Ok(true));
+    }
+}

@@ -1,4 +1,4 @@
-﻿using LocalizationManager.BLL.Model;
+﻿using LocalizationManager.Transfer.AuthDtos;
 
 namespace LocalizationManager.BLL.Authentication;
 

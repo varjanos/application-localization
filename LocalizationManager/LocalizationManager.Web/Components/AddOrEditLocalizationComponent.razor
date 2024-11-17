@@ -1,0 +1,82 @@
+﻿@using LocalizationManager.Transfer.LocalizationDtos
+@using LocalizationManager.Web.Client
+
+@inject ILocalizationClient LocalizationClient
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form">
+            <MudGrid Spacing="2">
+                <MudItem xs="6">
+                    <MudTextField @bind-Value="_localizationValueDto.ClientId" Label="Client ID" Variant="Variant.Outlined" Required="true" />
+                </MudItem>
+
+                <MudItem xs="6">
+                    <MudSelect @bind-Value="_localizationValueDto.LanguageCode" Label="Language" MultiSelection="false" Variant="Variant.Outlined" Required="true">
+                        @foreach (var language in Languages)
+                        {
+                            <MudSelectItem Value="@language.LanguageCode">@language.LanguageName (@language.LanguageCode)</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="_localizationValueDto.Key" Label="Key" Variant="Variant.Outlined" Required="true" />
+                </MudItem>
+                
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="_localizationValueDto.Value" Label="Value"
+                            Variant="Variant.Outlined" Required="true" Lines="3" MaxLength="500" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+
+        <MudButton OnClick="SaveAsync" Color="Color.Primary">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter] public LocalizationValueDto? LocalizationValue { get; set; } = null;
+
+    public List<LanguageDto> Languages { get; set; } = [ new LanguageDto { LanguageCode = "hu", LanguageName = "Hungarian" } ];
+
+    private LocalizationValueDto _localizationValueDto = new();
+
+    private MudForm form;
+
+    protected override void OnParametersSet()
+    {
+        if (LocalizationValue != null)
+        {
+            _localizationValueDto = new LocalizationValueDto
+            {
+                ClientId = LocalizationValue.ClientId,
+                Key = LocalizationValue.Key,
+                LanguageCode = LocalizationValue.LanguageCode,
+                Value = LocalizationValue.Value
+            };
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            await LocalizationClient.AddOrUpdateLocalizationValueAsync(_localizationValueDto);
+
+            MudDialog.Close(DialogResult.Ok(_localizationValueDto));
+        }
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}

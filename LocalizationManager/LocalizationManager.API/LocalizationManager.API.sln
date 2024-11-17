@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationManager.BLL", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationManager.DAL", "..\LocalizationManager.DAL\LocalizationManager.DAL.csproj", "{A2C268A7-8ADD-4D64-92BB-522E14C3F4C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalizationManager.Web", "..\LocalizationManager.Web\LocalizationManager.Web.csproj", "{3BA936EE-B69B-4A47-A2E6-58C60775C33B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationManager.Web", "..\LocalizationManager.Web\LocalizationManager.Web.csproj", "{3BA936EE-B69B-4A47-A2E6-58C60775C33B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalizationManager.Transfer", "..\LocalizationManager.Transfer\LocalizationManager.Transfer.csproj", "{90CB621E-604F-4DE1-92DD-9343917E8361}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3BA936EE-B69B-4A47-A2E6-58C60775C33B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BA936EE-B69B-4A47-A2E6-58C60775C33B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BA936EE-B69B-4A47-A2E6-58C60775C33B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90CB621E-604F-4DE1-92DD-9343917E8361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90CB621E-604F-4DE1-92DD-9343917E8361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90CB621E-604F-4DE1-92DD-9343917E8361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90CB621E-604F-4DE1-92DD-9343917E8361}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

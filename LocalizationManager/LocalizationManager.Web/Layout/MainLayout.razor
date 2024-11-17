@@ -1,11 +1,18 @@
-﻿@using MudBlazor.Utilities
+﻿@using Blazored.LocalStorage
+@using LocalizationManager.Web.Components
+@using LocalizationManager.Web.Options
+@using MudBlazor.Utilities
+@using System.Security.Claims
 @inherits LayoutComponentBase
+
+@inject IDialogService DialogService
+@inject AuthenticationStateProvider AuthState
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Nav;
 
 <MudThemeProvider />
 <MudPopoverProvider />
-
 <MudDialogProvider />
-
 <MudSnackbarProvider />
 
 <div class="page">
@@ -15,7 +22,18 @@
 
     <main>
         <div class="top-row px-4">
-            <h1>Hello</h1>
+            <AuthorizeView>
+                <Authorized>
+                    <MudText Typo="Typo.subtitle1" Class="mr-5">Current user: @UserName</MudText>
+
+                    <MudButton Variant="Variant.Outlined" OnClick="LogoutAsync">Logout</MudButton>
+                </Authorized>
+                <NotAuthorized>
+                    <MudButton Class="mr-2" Variant="Variant.Outlined" OnClick="RegisterAsync">Register</MudButton>
+
+                    <MudButton Variant="Variant.Outlined" OnClick="LoginAsync">Login</MudButton>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">
@@ -25,6 +43,8 @@
 </div>
 
 @code{
+    private string UserName = null!;
+
     private MudTheme _theme = new()
     {
         PaletteLight = new()
@@ -34,4 +54,52 @@
             Background = new MudColor("#E5E5E5"),
         },
     };
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authstate = await AuthState.GetAuthenticationStateAsync();
+
+        UserName = authstate.User.Claims
+            .FirstOrDefault(x => x.Subject?.NameClaimType == ClaimTypes.Name)?.Value
+            ?? "Unauthorized";
+    }
+
+    private async Task LoginAsync(){
+        var parameters = new DialogParameters<Login>();
+
+        var result = await (await DialogService.ShowAsync<Login>(
+            "Login",
+            parameters,
+            MudDialogOptions.AuthDialogOptions)).Result;
+
+        var success = (bool)(result?.Data ?? false);
+
+        if (success)
+        {
+            var authstate = await AuthState.GetAuthenticationStateAsync();
+
+            UserName = authstate.User.Claims
+                .FirstOrDefault(x => x.Subject?.NameClaimType == ClaimTypes.Name)?.Value
+                ?? "Unauthorized";
+
+            StateHasChanged();
+        }
+    }
+
+    private async Task RegisterAsync()
+    {
+        var parameters = new DialogParameters<Register>();
+
+        var result = await (await DialogService.ShowAsync<Register>(
+            "Register",
+            parameters,
+            MudDialogOptions.AuthDialogOptions)).Result;
+    }
+
+    private async Task LogoutAsync()
+    {
+        await LocalStorage.ClearAsync();
+
+        Nav.NavigateTo("logout");
+    }
 }
