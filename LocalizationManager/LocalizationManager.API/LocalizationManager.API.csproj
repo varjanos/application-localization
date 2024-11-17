@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LocalizationManager.BLL\LocalizationManager.BLL.csproj" />
     <ProjectReference Include="..\LocalizationManager.DAL\LocalizationManager.DAL.csproj" />
+    <ProjectReference Include="..\LocalizationManager.Web\LocalizationManager.Web.csproj" />
   </ItemGroup>
 
 </Project>
