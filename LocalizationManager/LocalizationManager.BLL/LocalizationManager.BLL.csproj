@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LocalizationManager.DAL\LocalizationManager.DAL.csproj" />
+    <ProjectReference Include="..\LocalizationManager.Transfer\LocalizationManager.Transfer.csproj" />
   </ItemGroup>
 
 </Project>

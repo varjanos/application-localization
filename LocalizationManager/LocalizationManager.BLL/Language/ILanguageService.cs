@@ -1,4 +1,4 @@
-﻿using LocalizationManager.BLL.Model;
+﻿using LocalizationManager.Transfer.LocalizationDtos;
 
 namespace LocalizationManager.BLL.Language;
 

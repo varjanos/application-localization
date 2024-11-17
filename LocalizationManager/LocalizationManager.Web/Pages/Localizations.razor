@@ -1,0 +1,112 @@
+﻿@page "/localizations"
+
+@using LocalizationManager.Transfer.LocalizationDtos
+@using LocalizationManager.Web.Client
+@using LocalizationManager.Web.Components
+@using LocalizationManager.Web.Options
+@using Microsoft.AspNetCore.Authorization
+
+@inject ILocalizationClient LocalizationClient
+@inject IDialogService DialogService
+
+@attribute [Authorize]
+
+<PageTitle>Localizations</PageTitle>
+
+<MudTable T="LocalizationValueDto" Items="_localizationValues" Dense Bordered Striped>
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Localization Values</MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@AddLocalizationValue">
+            Add new localization value
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Style="width: 20%;">Client ID</MudTh>
+        <MudTh Style="width: 5%;">Language</MudTh>
+        <MudTh Style="width: 20%;">Key</MudTh>
+        <MudTh Style="width: 45%;">Value</MudTh>
+        <MudTh Style="width: 5%;"></MudTh>
+        <MudTh Style="width: 5%;"></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.ClientId</MudTd>
+        <MudTd>@context.LanguageCode</MudTd>
+        <MudTd>@context.Key</MudTd>
+        <MudTd>@context.Value</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="mr-2" OnClick="@(() => EditLocalizationValueAsync(context))" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" OnClick="@(() => DeleteLocalizationValueAsync(context))" />
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private IList<LocalizationValueDto> _localizationValues = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDataAsync();
+
+        if(_localizationValues.Count == 0)
+        {
+            _localizationValues = new List<LocalizationValueDto>
+            {
+                new LocalizationValueDto { ClientId = "1", Key = "Title", LanguageCode = "en", Value = "Welcome" },
+                new LocalizationValueDto { ClientId = "1", Key = "Title", LanguageCode = "fr", Value = "Bienvenue" },
+                new LocalizationValueDto { ClientId = "2", Key = "Description", LanguageCode = "en", Value = "Description in English" }
+            };
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        _localizationValues = await LocalizationClient.GetLocalizationValuesAsync("TODO");
+
+        StateHasChanged();
+    }
+
+    private async Task AddLocalizationValue()
+    {
+        var parameters = new DialogParameters<AddOrEditLocalizationComponent>();
+
+        var result = await (await DialogService.ShowAsync<AddOrEditLocalizationComponent>(
+            "Add new localization value",
+            parameters,
+            MudDialogOptions.LocalizationDialogOptions)).Result;
+
+        await LoadDataAsync();
+    }
+
+    private async Task EditLocalizationValueAsync(LocalizationValueDto item)
+    {
+        var parameters = new DialogParameters<AddOrEditLocalizationComponent>();
+
+        parameters.Add(x => x.LocalizationValue, item);
+
+        var result = await (await DialogService.ShowAsync<AddOrEditLocalizationComponent>(
+            "Edit localization value",
+            parameters,
+            MudDialogOptions.LocalizationDialogOptions)).Result;
+
+        await LoadDataAsync();
+    }
+
+    private async Task DeleteLocalizationValueAsync(LocalizationValueDto item)
+    {
+        bool? result = await DialogService.ShowMessageBox(
+            "Delete value",
+            "Are you sure, you want to delete the localization?",
+            yesText: "Yes", noText: "Cancel"
+        );
+
+        if (!(result.HasValue && result.Value))
+            return;
+
+        // TODO
+    }
+}

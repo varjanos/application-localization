@@ -1,5 +1,5 @@
 ﻿using LocalizationManager.BLL.Localization;
-using LocalizationManager.BLL.Model;
+using LocalizationManager.Transfer.LocalizationDtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LocalizationManager.API.Controllers;

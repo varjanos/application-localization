@@ -1,4 +1,4 @@
-﻿using LocalizationManager.BLL.Model;
+﻿using LocalizationManager.Transfer.AuthDtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using LocalizationManager.DAL.Entities;
@@ -59,7 +59,6 @@ internal class AuthService(
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
             }),
             Expires = DateTime.UtcNow.AddMinutes(30),

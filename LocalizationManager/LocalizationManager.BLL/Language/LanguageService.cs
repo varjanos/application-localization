@@ -1,4 +1,4 @@
-﻿using LocalizationManager.BLL.Model;
+﻿using LocalizationManager.Transfer.LocalizationDtos;
 using LocalizationManager.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 

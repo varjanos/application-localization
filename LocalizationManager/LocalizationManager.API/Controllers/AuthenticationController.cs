@@ -1,5 +1,5 @@
 ﻿using LocalizationManager.BLL.Authentication;
-using LocalizationManager.BLL.Model;
+using LocalizationManager.Transfer.AuthDtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LocalizationManager.API.Controllers;
@@ -19,7 +19,7 @@ public class AuthenticationController(
     }
 
     [HttpPost("Login")]
-    public async Task<ActionResult> Login([FromBody] LoginDto model)
+    public async Task<ActionResult<string>> Login([FromBody] LoginDto model)
     {
         string token = await _authenticationService.LoginAsync(model);
 
