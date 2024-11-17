@@ -23,8 +23,12 @@ internal class AuthService(
             Email = dto.Email,
         };
 
-        var createdUser = await _userManager.CreateAsync(user, dto.Password)
-            ?? throw new Exception("Registration failed");
+        var createdUser = await _userManager.CreateAsync(user, dto.Password);
+
+        if (!createdUser.Succeeded)
+        {
+            throw new Exception($"Registration failed, reason: {string.Join(";", createdUser.Errors.Select(x => x.Description))}");
+        }
     }
 
     public async Task<string> LoginAsync(LoginDto model)

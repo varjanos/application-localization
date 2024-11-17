@@ -4,6 +4,7 @@ using LocalizationManager.DAL;
 using LocalizationManager.DAL.Context;
 using LocalizationManager.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Primitives;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,20 +30,48 @@ builder.Services.ConfigureAuthenticationService();
 builder.Services.ConfigureLocalizationService();
 builder.Services.ConfigureLanguageService();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseWebAssemblyDebugging();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("X-Content-Type-Options", new StringValues("nosniff"));
+    context.Response.Headers.Append("X-Frame-Options", new StringValues("SAMEORIGIN"));
+    context.Response.Headers.Append("X-XSS-Protection", new StringValues("1; mode=block"));
+
+    context.Response.Headers.Append("Cache-Control", new StringValues("no-store, no-cache"));
+    context.Response.Headers.Append("Pragma", new StringValues("no-cache"));
+
+    await next();
+});
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();

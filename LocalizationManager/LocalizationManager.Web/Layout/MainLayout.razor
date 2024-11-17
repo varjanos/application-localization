@@ -1,0 +1,37 @@
+﻿@using MudBlazor.Utilities
+@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudPopoverProvider />
+
+<MudDialogProvider />
+
+<MudSnackbarProvider />
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <h1>Hello</h1>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code{
+    private MudTheme _theme = new()
+    {
+        PaletteLight = new()
+        {
+            Primary = new MudColor("#8c2532"),
+            Secondary = new MudColor("#f76570"),
+            Background = new MudColor("#E5E5E5"),
+        },
+    };
+}
