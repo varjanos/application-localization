@@ -1,0 +1,53 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Welcome to the LocalizationClient web application!</h1>
+<br />
+<p>In this application we showcase how to change the language and the culture in real time using our SDK</p>
+<hr />
+<div class="container">
+    <div class="left-grid">
+        <h4>Developers</h4>
+        <br />
+        @foreach (var creator in GetCreators())
+        {
+            <ul>
+                <li>@creator</li>
+            </ul>
+        }
+        <br />
+        <h4>How to use</h4>
+        <ol>
+            <li>Change the language to your preference</li>
+            <li>Login or Register</li>
+            <li>Hover over to the Weather page</li>
+            <li>You will be able to see the data in your culture</li>
+        </ol>
+        <br />
+        <h4>Try it out!</h4>
+    </div>
+    <div class="right-grid">
+        <img src="Localization_1.jpg" class="image" />
+        <br />
+        <p><b>Localization</b> enables you to adapt your products or services to meet the specific needs and expectations of local customers.</p>
+        <br />
+        <img src="Localization_2.jpg" class="image" />
+        <br />
+        <p><b>Localization</b> is not just about making our application multi-language but the <b>culture</b> aswell see it on the <b>Weather</b> page</p>
+
+
+    </div>
+</div>
+
+@code{
+    private List<string> creators = new List<string>();
+    public List<string> GetCreators()
+    {
+        creators.Add("Varga János");
+        creators.Add("Tkalcec Péter");
+        creators.Add("Nagy Bernát Attlia");
+        return creators;
+    }
+
+}
