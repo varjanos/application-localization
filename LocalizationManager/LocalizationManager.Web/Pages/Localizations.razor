@@ -1,5 +1,6 @@
 ﻿@page "/localizations"
 
+@using LocalizationManager.Transfer.Application
 @using LocalizationManager.Transfer.LocalizationDtos
 @using LocalizationManager.Web.Client
 @using LocalizationManager.Web.Components
@@ -7,6 +8,7 @@
 @using Microsoft.AspNetCore.Authorization
 
 @inject ILocalizationClient LocalizationClient
+@inject IApplicationClient ApplicationClient
 @inject IDialogService DialogService
 
 @attribute [Authorize]
@@ -17,20 +19,30 @@
     <ToolBarContent>
         <MudText Typo="Typo.h6">Localization Values</MudText>
         <MudSpacer />
+        
+        <div style="width: 300px;" class="mr-5">
+            <MudSelect T="int" Label="Select Application" Variant="Variant.Outlined" Value="selectedAppId" ValueChanged="OnApplicationSelected">
+                @foreach (var app in _registeredApplications)
+                {
+                    <MudSelectItem T="int" Value="app.Id">
+                        @app.AppName
+                    </MudSelectItem>
+                }
+            </MudSelect>
+        </div>
+
         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@AddLocalizationValue">
             Add new localization value
         </MudButton>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh Style="width: 20%;">Client ID</MudTh>
         <MudTh Style="width: 5%;">Language</MudTh>
         <MudTh Style="width: 20%;">Key</MudTh>
-        <MudTh Style="width: 45%;">Value</MudTh>
+        <MudTh Style="width: 65%;">Value</MudTh>
         <MudTh Style="width: 5%;"></MudTh>
         <MudTh Style="width: 5%;"></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd>@context.ClientId</MudTd>
         <MudTd>@context.LanguageCode</MudTd>
         <MudTd>@context.Key</MudTd>
         <MudTd>@context.Value</MudTd>
@@ -46,29 +58,40 @@
 @code {
     private IList<LocalizationValueDto> _localizationValues = [];
 
+    private IList<ApplicationDto> _registeredApplications = [];
+
+    private int selectedAppId = 0;
+
     protected override async Task OnInitializedAsync()
     {
-        await LoadDataAsync();
+        _registeredApplications = await ApplicationClient.GetRegisteredApplicationsAsync();
 
-        if(_localizationValues.Count == 0)
-        {
-            _localizationValues = new List<LocalizationValueDto>
-            {
-                new LocalizationValueDto { ClientId = "1", Key = "Title", LanguageCode = "en", Value = "Welcome" },
-                new LocalizationValueDto { ClientId = "1", Key = "Title", LanguageCode = "fr", Value = "Bienvenue" },
-                new LocalizationValueDto { ClientId = "2", Key = "Description", LanguageCode = "en", Value = "Description in English" }
-            };
-        }
+        if (_registeredApplications.Count == 0) { return; }
+
+        selectedAppId = _registeredApplications.First().Id;
+
+        await LoadDataAsync();
 
         await base.OnInitializedAsync();
     }
 
     private async Task LoadDataAsync()
     {
-        _localizationValues = await LocalizationClient.GetLocalizationValuesAsync("TODO");
+        if(selectedAppId == 0) { return; }
+
+        _localizationValues = await LocalizationClient.GetLocalizationValuesAsync(selectedAppId);
+
+        _localizationValues.OrderBy(x => x.Key).ThenBy(x => x.LanguageCode).ToList();
 
         StateHasChanged();
     }
+
+    private async Task OnApplicationSelected(int selectedAppId)
+    {
+        this.selectedAppId = selectedAppId;
+
+        await LoadDataAsync();
+    } 
 
     private async Task AddLocalizationValue()
     {

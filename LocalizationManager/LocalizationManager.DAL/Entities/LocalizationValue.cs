@@ -4,7 +4,7 @@ public class LocalizationValue
 {
     public int Id { get; set; }
 
-    public required string ClientId { get; set; } = null!;
+    public required int ClientId { get; set; }
     public required string Key { get; set; } = null!;
     public required string LanguageCode { get; set; } = null!;
 

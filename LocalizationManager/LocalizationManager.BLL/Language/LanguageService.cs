@@ -12,4 +12,16 @@ internal class LanguageService(LocalizationDbContext _dbContext) : ILanguageServ
             .Select(x => new LanguageDto { LanguageCode = x.LanguageCode, LanguageName = x.LanguageName })
             .ToListAsync();
     }
+
+    public async Task<List<LanguageDto>> GetSupportedLanguagesForApplicationAsync(int applicationId)
+    {
+        var app = await _dbContext.RegisteredApplications
+            .SingleAsync(x => x.Id == applicationId);
+
+        var languages = await GetAllLanguagesAsync();
+
+        var supportedLangs = app.SupportedLanguages.Split(";").ToList();
+
+        return languages.Where(x => supportedLangs.Contains(x.LanguageCode)).ToList();
+    }
 }

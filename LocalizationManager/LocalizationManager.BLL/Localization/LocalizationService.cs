@@ -6,7 +6,7 @@ namespace LocalizationManager.BLL.Localization;
 
 internal class LocalizationService(LocalizationDbContext _dbContext) : ILocalizationService
 {
-    public async Task<List<LocalizationValueDto>> GetLocalizationValuesAsync(string clientId)
+    public async Task<List<LocalizationValueDto>> GetLocalizationValuesAsync(int clientId)
     {
         return await _dbContext.LocalizationValues
             .Where(x => x.ClientId == clientId)
@@ -44,10 +44,5 @@ internal class LocalizationService(LocalizationDbContext _dbContext) : ILocaliza
         }
 
         await _dbContext.SaveChangesAsync();
-    }
-
-    public Task AddOrUpdateLocalizationValuesAsync(List<LocalizationValueDto> values)
-    {
-        throw new NotImplementedException();
     }
 }

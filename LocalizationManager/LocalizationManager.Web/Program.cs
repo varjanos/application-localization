@@ -23,6 +23,7 @@ builder.Services.AddHttpClient(HttpClientNames.ApiHttpClientName, client => clie
 
 builder.Services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(HttpClientNames.ApiHttpClientName);
 builder.Services.AddHttpClient<ILocalizationClient, LocalizationClient>(HttpClientNames.ApiHttpClientName);
+builder.Services.AddHttpClient<IApplicationClient, ApplicationClient>(HttpClientNames.ApiHttpClientName);
 
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();

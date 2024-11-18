@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationManager.DAL", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationManager.Web", "..\LocalizationManager.Web\LocalizationManager.Web.csproj", "{3BA936EE-B69B-4A47-A2E6-58C60775C33B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalizationManager.Transfer", "..\LocalizationManager.Transfer\LocalizationManager.Transfer.csproj", "{90CB621E-604F-4DE1-92DD-9343917E8361}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationManager.Transfer", "..\LocalizationManager.Transfer\LocalizationManager.Transfer.csproj", "{90CB621E-604F-4DE1-92DD-9343917E8361}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
