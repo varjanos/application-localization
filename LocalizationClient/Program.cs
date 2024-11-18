@@ -8,6 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<LoginViewModel>();
 builder.Services.AddScoped<RegisterViewModel>();
+builder.Services.AddScoped<LocalDateViewModel>();
 
 var app = builder.Build();
 
