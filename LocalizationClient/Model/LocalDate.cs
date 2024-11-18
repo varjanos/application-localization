@@ -5,5 +5,6 @@
         public DateOnly date { get; set; }
         public string temperature { get; set; }
         public string season { get; set; }
+        public string time { get; set; }
     }
 }

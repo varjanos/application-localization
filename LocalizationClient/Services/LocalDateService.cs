@@ -19,27 +19,31 @@ namespace LocalizationClient.Services
         {
             _dates.Add(new LocalDate()
             {
-                date = DateOnly.FromDateTime(DateTime.Parse("2023.2.20")),
+                date = DateOnly.FromDateTime(DateTime.Parse("2/20/2023")),
                 temperature = "4 C",
-                season = "Winter"
+                season = "Winter",
+                time = DateTime.Parse("2023.3.4 18:50").ToString("MM/dd/yyyy h:mm")
             });
             _dates.Add(new LocalDate()
             {
-                date = DateOnly.FromDateTime(DateTime.Parse("2023.4.16")),
+                date = DateOnly.FromDateTime(DateTime.Parse("4/16/2023")),
                 temperature = "23 C",
-                season = "Spring"
+                season = "Spring",
+                time = DateTime.Parse("2023.5.3 19:34").ToString("MM/dd/yyyy h:mm")
             });
             _dates.Add(new LocalDate()
             {
-                date = DateOnly.FromDateTime(DateTime.Parse("2023.7.26")),
+                date = DateOnly.FromDateTime(DateTime.Parse("7/26/2023")),
                 temperature = "38 C",
-                season = "Summer"
+                season = "Summer",
+                time = DateTime.Parse("2023.8.1 18:05").ToString("MM/dd/yyyy h:mm")
             });
             _dates.Add(new LocalDate()
             {
-                date = DateOnly.FromDateTime(DateTime.Parse("2023.9.4")),
+                date = DateOnly.FromDateTime(DateTime.Parse("9/4/2023")),
                 temperature = "28 C",
-                season = "Autumn"
+                season = "Autumn",
+                time = DateTime.Parse("2023.10.6 21:40").ToString("MM/dd/yyyy h:mm")
             });
         }
         public List<LocalDate> GetDate()
