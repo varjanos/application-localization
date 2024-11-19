@@ -9,8 +9,16 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped<LoginViewModel>();
 builder.Services.AddScoped<RegisterViewModel>();
 builder.Services.AddScoped<LocalDateViewModel>();
+builder.Services.AddLocalization();
 
 var app = builder.Build();
+
+string[] appCultures = ["en-UK", "h-Hun"];
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(appCultures[0])
+    .AddSupportedCultures(appCultures)
+    .AddSupportedUICultures(appCultures);
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
