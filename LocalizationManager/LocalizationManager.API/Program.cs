@@ -1,5 +1,6 @@
 using LocalizationManager.API.Extensions;
 using LocalizationManager.BLL;
+using LocalizationManager.BLL.Hub;
 using LocalizationManager.DAL;
 using LocalizationManager.DAL.Context;
 using LocalizationManager.DAL.Entities;
@@ -45,6 +46,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -76,6 +79,9 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.MapControllers();
+
+app.MapHub<LocalizationHub>("/hubs/localization-hub");
+
 app.MapFallbackToFile("index.html");
 
 app.Run();

@@ -1,10 +1,14 @@
 ﻿using LocalizationManager.Transfer.LocalizationDtos;
 using LocalizationManager.DAL.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+using LocalizationManager.BLL.Hub;
 
 namespace LocalizationManager.BLL.Localization;
 
-internal class LocalizationService(LocalizationDbContext _dbContext) : ILocalizationService
+internal class LocalizationService(
+    LocalizationDbContext _dbContext,
+    IHubContext<LocalizationHub, ILocalizationClient> _hubContext) : ILocalizationService
 {
     public async Task<List<LocalizationValueDto>> GetLocalizationValuesAsync(int clientId)
     {
@@ -42,6 +46,8 @@ internal class LocalizationService(LocalizationDbContext _dbContext) : ILocaliza
         {
             value.Value = request.Value;
         }
+
+        await _hubContext.Clients.All.SendLocalizationUpdated("hu", "sdad", "asdasd");
 
         await _dbContext.SaveChangesAsync();
     }
