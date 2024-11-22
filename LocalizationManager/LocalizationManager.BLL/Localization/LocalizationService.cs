@@ -47,7 +47,7 @@ internal class LocalizationService(
             value.Value = request.Value;
         }
 
-        await _hubContext.Clients.All.SendLocalizationUpdated("hu", "sdad", "asdasd");
+        //await _hubContext.Clients.Groups() .All.SendLocalizationUpdated("hu", "sdad", "asdasd");
 
         await _dbContext.SaveChangesAsync();
     }

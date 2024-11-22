@@ -8,6 +8,7 @@ public class LocalizationHub(ILogger<LocalizationHub> _logger) : Hub<ILocalizati
     public override async Task OnConnectedAsync()
     {
         var appId = Context.GetHttpContext()?.Request.Query["appId"];
+        var appName = Context.GetHttpContext()?.Request.Query["appName"];
 
         if (!string.IsNullOrEmpty(appId))
         {
@@ -15,6 +16,8 @@ public class LocalizationHub(ILogger<LocalizationHub> _logger) : Hub<ILocalizati
 
             _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", appId, Context.ConnectionId);
         }
+
+        
 
         await base.OnConnectedAsync();
     }
