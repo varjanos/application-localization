@@ -1,64 +1,41 @@
-﻿@page "/weather"
+﻿@page "/localdate"
+@using LocalizationClient.ViewModels
 @attribute [StreamRendering]
+@inject LocalDateViewModel localDatevm
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>LocalDate</PageTitle>
 
-<h1>Weather</h1>
+<h1>Local Date</h1>
 
-<p>This component demonstrates showing data.</p>
-
-@if (forecasts == null)
+<p>On this page we show you the highest average daily temperature in each season of Hungary in the selected language culture</p>
+<h4>About the data</h4>
+<ul>
+    <li>Date - Highest daily average temperature</li>
+    <li>Temperature - Average seasonal temperature in Hungary</li>
+    <li>Season - 2023 Seasons</li>
+</ul>
+@if (localDatevm.GetData().Count == 0)
 {
-    <p><em>Loading...</em></p>
+    localDatevm.AddData();
 }
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-@code {
-    private WeatherForecast[]? forecasts;
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Temperature</th>
+            <th>Season</th>
+            <th>Documented</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dates in localDatevm.GetData())
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
-    }
-
-    private class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    }
-}
+            <tr>
+                <td>@dates.date</td>
+                <td>@dates.temperature</td>
+                <td>@dates.season</td>
+                <td>@dates.time</td>
+            </tr>
+        }
+    </tbody>
+</table>
