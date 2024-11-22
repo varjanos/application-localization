@@ -7,4 +7,6 @@ public class LocalizationOptions
     public string AppName { get; set; } = null!;
 
     public string AppId { get; set; } = null!;
+
+    public string ResourceFilePath { get; set; } = null!;
 }

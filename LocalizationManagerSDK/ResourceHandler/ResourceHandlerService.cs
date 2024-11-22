@@ -1,6 +1,8 @@
-﻿namespace LocalizationManagerSDK.ResourceHandler;
+﻿using LocalizationManagerSDK.Options;
 
-internal class ResourceHandlerService : IResourceHandlerService
+namespace LocalizationManagerSDK.ResourceHandler;
+
+internal class ResourceHandlerService(LocalizationOptions localizationOptions) : IResourceHandlerService
 {
     public void HandleLocalizationAdded(string language, string key, string value)
     {
