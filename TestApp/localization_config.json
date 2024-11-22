@@ -1,0 +1,4 @@
+{
+    "ServerUrl": "http://localhost:5000/hub",
+    "HubEndpoint": "/localizationHub"
+}
