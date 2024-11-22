@@ -1,0 +1,81 @@
+﻿@page "/applications"
+
+@using LocalizationManager.Transfer.Application;
+@using LocalizationManager.Web.Client;
+@using Microsoft.AspNetCore.Authorization
+
+@inject IApplicationClient ApplicationClient
+
+@attribute [Authorize]
+
+<MudTable T="ApplicationDto" Items="_applications" Hover="true" Bordered="true" Elevation="1">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Applications</MudText>
+        <MudSpacer />
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@AddApplicationAsync">
+            Register new application
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Style="width: 30%">App Name</MudTh>
+        <MudTh Style="width: 40%">App URL</MudTh>
+        <MudTh Style="width: 20%">Supported Languages</MudTh>
+        <MudTh Style="width: 5%" />
+        <MudTh Style="width: 5%" />
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="App Name">@context.AppName</MudTd>
+        <MudTd DataLabel="App URL">@context.AppUrl</MudTd>
+        <MudTd DataLabel="Supported Languages">
+            @foreach (var lang in @context.SupportedLanguages)
+            {
+                <MudChip T="string" Color="Color.Primary" Style="margin-right:5px">@lang</MudChip>
+            }
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" Class="mr-2"
+                OnClick="@(async () => await EditApplicationAsync(context))" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                           OnClick="@(async () => await DeleteApplicationAsync(context))" />
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private IList<ApplicationDto> _applications = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDataAsync();
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        _applications = await ApplicationClient.GetRegisteredApplicationsAsync();
+
+        StateHasChanged();
+    }
+
+    private async Task AddApplicationAsync()
+    {
+
+    }
+
+    private async Task EditApplicationAsync(ApplicationDto dto)
+    {
+
+    }
+
+    private async Task DeleteApplicationAsync(ApplicationDto dto)
+    {
+        await ApplicationClient.DeleteApplicationAsync(dto);
+
+        _applications.Remove(dto);
+
+        StateHasChanged();
+    }
+}

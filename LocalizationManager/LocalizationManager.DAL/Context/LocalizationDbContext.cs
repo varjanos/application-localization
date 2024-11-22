@@ -9,6 +9,7 @@ public class LocalizationDbContext(DbContextOptions<LocalizationDbContext> optio
 {
     public DbSet<Language> Languages { get; set; }
     public DbSet<LocalizationValue> LocalizationValues { get; set; }
+    public DbSet<RegisteredApplication> RegisteredApplications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -90,7 +90,8 @@
       "operationGenerationMode": "MultipleClientsFromOperationId",
       "additionalNamespaceUsages": [
         "LocalizationManager.Transfer.AuthDtos",
-        "LocalizationManager.Transfer.LocalizationDtos"
+        "LocalizationManager.Transfer.LocalizationDtos",
+        "LocalizationManager.Transfer.Application"
       ],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": false,

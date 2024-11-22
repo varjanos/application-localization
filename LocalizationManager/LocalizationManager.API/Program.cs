@@ -1,5 +1,6 @@
 using LocalizationManager.API.Extensions;
 using LocalizationManager.BLL;
+using LocalizationManager.BLL.Hub;
 using LocalizationManager.DAL;
 using LocalizationManager.DAL.Context;
 using LocalizationManager.DAL.Entities;
@@ -32,6 +33,7 @@ builder.Services.AddControllers();
 builder.Services.ConfigureAuthenticationService();
 builder.Services.ConfigureLocalizationService();
 builder.Services.ConfigureLanguageService();
+builder.Services.ConfigureApplicationService();
 
 builder.Services.AddCors(options =>
 {
@@ -43,6 +45,8 @@ builder.Services.AddCors(options =>
             policy.AllowAnyMethod();
         });
 });
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -75,6 +79,9 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.MapControllers();
+
+app.MapHub<LocalizationHub>("/hubs/localization-hub");
+
 app.MapFallbackToFile("index.html");
 
 app.Run();
