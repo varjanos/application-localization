@@ -11,8 +11,10 @@ public static class WireUp
     {
         services.AddScoped<IResourceHandlerService, ResourceHandlerService>();
 
+        services.AddSingleton(options);
+
         services.AddSingleton<SignalRConnectorService>();
 
-        services.AddSingleton(options);
+        services.BuildServiceProvider().GetRequiredService<SignalRConnectorService>();
     }
 }

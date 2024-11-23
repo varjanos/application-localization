@@ -7,8 +7,11 @@ public class LocalizationHub(ILogger<LocalizationHub> _logger) : Hub<ILocalizati
 {
     public override async Task OnConnectedAsync()
     {
-        var appId = Context.GetHttpContext()?.Request.Query["appId"];
-        var appName = Context.GetHttpContext()?.Request.Query["appName"];
+        var context = Context.GetHttpContext() ?? throw new Exception("Something went wrong with the connection!");
+
+        var appId = context.Request.Query["appId"];
+        var appName = context.Request.Query["appName"];
+        var supportedLanguages = context.Request.Query["supportedLanguages"];
 
         if (!string.IsNullOrEmpty(appId))
         {
@@ -17,14 +20,14 @@ public class LocalizationHub(ILogger<LocalizationHub> _logger) : Hub<ILocalizati
             _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", appId, Context.ConnectionId);
         }
 
-        
-
         await base.OnConnectedAsync();
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var appId = Context.GetHttpContext()?.Request.Query["appId"];
+        var context = Context.GetHttpContext() ?? throw new Exception("Something went wrong with the connection!");
+
+        var appId = context.Request.Query["appId"];
 
         if (!string.IsNullOrEmpty(appId))
         {
