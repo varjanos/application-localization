@@ -1,0 +1,68 @@
+﻿@using LocalizationManager.Transfer.Application
+@using LocalizationManager.Transfer.LocalizationDtos
+@using LocalizationManager.Web.Client
+
+@inject ILanguageClient LanguageClient
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form">
+            <MudGrid Spacing="2">
+
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="App ID" @bind-Value="application.AppId" Disabled="@IsEdit" Required="true" />
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="App Name" @bind-Value="application.AppName" Required="true" />
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudSelect @bind-Value="application.SupportedLanguages" Label="Supported Languages" MultiSelection="true" Variant="Variant.Outlined" Required="true">
+                        @foreach (var language in AllLanguages)
+                        {
+                            <MudSelectItem Value="@language.LanguageCode">@language.LanguageName (@language.LanguageCode)</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="() => MudDialog.Close()" Color="Color.Secondary">Cancel</MudButton>
+
+        <MudButton Color="Color.Primary">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter] public ApplicationDto? applicationDto { get; set; } = null!;
+
+    private bool IsEdit = false;
+
+    private List<LanguageDto> AllLanguages = [];
+
+    private ApplicationDto application = new();
+
+    private MudForm form;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        IsEdit = applicationDto == null;
+
+        if(applicationDto == null)
+        {
+            IsEdit = false;
+            applicationDto = new();
+        }
+
+        AllLanguages = (await LanguageClient.GetAllLanguagesAsync()).ToList();
+
+
+
+        await base.OnParametersSetAsync();
+    }
+}

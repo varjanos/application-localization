@@ -1,0 +1,36 @@
+﻿@page "/languages"
+
+@using LocalizationManager.Transfer.LocalizationDtos
+@using LocalizationManager.Web.Client
+@using Microsoft.AspNetCore.Authorization
+
+@inject ILanguageClient LanguageClient
+
+@attribute [Authorize]
+
+<PageTitle>Languages</PageTitle>
+
+<MudTable T="LanguageDto" Items="_languages" Dense Bordered Striped>
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Languages</MudText>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Style="width: 70%;">Language</MudTh>
+        <MudTh Style="width: 30%;">LanguageCode</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.LanguageName</MudTd>
+        <MudTd><MudChip T="string" Color="Color.Primary">@context.LanguageCode</MudChip></MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private IList<LanguageDto> _languages = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _languages = await LanguageClient.GetAllLanguagesAsync();
+
+        await base.OnInitializedAsync();
+    }
+}

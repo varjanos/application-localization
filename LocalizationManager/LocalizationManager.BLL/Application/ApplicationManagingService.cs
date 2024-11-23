@@ -16,6 +16,7 @@ internal class ApplicationManagingService(
         return apps.Select(x => new ApplicationDto
         {
             Id = x.Id,
+            AppId = x.AppId,
             AppName = x.AppName,
             SupportedLanguages = [.. x.SupportedLanguages.Split(";")],
         }).ToList();

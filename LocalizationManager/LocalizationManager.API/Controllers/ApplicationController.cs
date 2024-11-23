@@ -13,8 +13,7 @@ public class ApplicationController(IApplicationManagingService _applicationManag
     [HttpGet]
     public async Task<ActionResult<List<ApplicationDto>>> GetRegisteredApplications()
     {
-        var applications = await _applicationManagingService.GetRegisteredApplicationsAsync();
-        return Ok(applications);
+        return Ok(await _applicationManagingService.GetRegisteredApplicationsAsync());
     }
 
     [HttpPost]
