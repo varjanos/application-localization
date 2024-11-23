@@ -1,23 +1,35 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using LocalizationManager.BLL.Application;
+using LocalizationManager.Transfer.Application;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace LocalizationManager.BLL.Hub;
 
-public class LocalizationHub(ILogger<LocalizationHub> _logger) : Hub<ILocalizationClient>
+public class LocalizationHub(
+    ILogger<LocalizationHub> _logger,
+    IApplicationManagingService _applicationManagingService) : Hub<ILocalizationClient>
 {
     public override async Task OnConnectedAsync()
     {
         var context = Context.GetHttpContext() ?? throw new Exception("Something went wrong with the connection!");
 
-        var appId = context.Request.Query["appId"];
-        var appName = context.Request.Query["appName"];
-        var supportedLanguages = context.Request.Query["supportedLanguages"];
+        var applicationDto = new ApplicationDto();
 
-        if (!string.IsNullOrEmpty(appId))
+        try
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, appId!);
+            applicationDto.AppId = context.Request.Query["appId"].Single() ?? "";
+            applicationDto.AppName = context.Request.Query["appName"].Single() ?? "";
+            applicationDto.SupportedLanguages = context.Request.Query["supportedLanguages"].Single()!.Split(';').ToList();
 
-            _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", appId, Context.ConnectionId);
+            await _applicationManagingService.RegisterApplicationAsync(applicationDto);
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, applicationDto.AppId);
+
+            _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", applicationDto.AppId, Context.ConnectionId);
+
+        } catch(Exception)
+        {
+            _logger.LogInformation("Client with connectionId: {connectionId} failed to connect!", Context.ConnectionId);
         }
 
         await base.OnConnectedAsync();

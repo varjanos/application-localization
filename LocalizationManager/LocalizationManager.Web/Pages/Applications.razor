@@ -11,21 +11,27 @@
 <MudTable T="ApplicationDto" Items="_applications" Hover="true" Bordered="true" Elevation="1">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Applications</MudText>
+
         <MudSpacer />
+
+        <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Text" Class="mr-3" OnClick="@LoadDataAsync">
+            Refresh data
+        </MudIconButton>
+
         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@AddApplicationAsync">
             Register new application
         </MudButton>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh Style="width: 30%">App Name</MudTh>
-        <MudTh Style="width: 40%">App URL</MudTh>
+        <MudTh Style="width: 30%">App ID</MudTh>
+        <MudTh Style="width: 40%">App Name</MudTh>
         <MudTh Style="width: 20%">Supported Languages</MudTh>
         <MudTh Style="width: 5%" />
         <MudTh Style="width: 5%" />
     </HeaderContent>
     <RowTemplate>
+        <MudTd DataLabel="App Id">@context.AppId</MudTd>
         <MudTd DataLabel="App Name">@context.AppName</MudTd>
-        <MudTd DataLabel="App URL">@context.AppUrl</MudTd>
         <MudTd DataLabel="Supported Languages">
             @foreach (var lang in @context.SupportedLanguages)
             {
