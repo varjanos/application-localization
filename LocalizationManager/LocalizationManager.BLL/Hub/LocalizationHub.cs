@@ -2,6 +2,7 @@
 using LocalizationManager.Transfer.Application;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 
 namespace LocalizationManager.BLL.Hub;
 
