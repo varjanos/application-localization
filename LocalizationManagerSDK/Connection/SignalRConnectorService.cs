@@ -1,8 +1,8 @@
-﻿namespace LocalizationManagerSDK.Connection;
-
-using LocalizationManagerSDK.Options;
+﻿using LocalizationManagerSDK.Options;
 using LocalizationManagerSDK.ResourceHandler;
 using Microsoft.AspNetCore.SignalR.Client;
+
+namespace LocalizationManagerSDK.Connection;
 
 public class SignalRConnectorService : IAsyncDisposable
 {
@@ -10,15 +10,26 @@ public class SignalRConnectorService : IAsyncDisposable
 
     private readonly IResourceHandlerService _resourceHandlerService;
 
-    public SignalRConnectorService(LocalizationOptions localizationOptions, IResourceHandlerService resourceHandlerService)
+    public SignalRConnectorService(IResourceHandlerService resourceHandlerService, LocalizationOptions localizationOptions)
     {
+        ArgumentNullException.ThrowIfNull(localizationOptions);
+        ArgumentException.ThrowIfNullOrEmpty(localizationOptions.ManagerUrl);
+        ArgumentException.ThrowIfNullOrEmpty(localizationOptions.AppName);
+        ArgumentException.ThrowIfNullOrEmpty(localizationOptions.AppId);
+        ArgumentException.ThrowIfNullOrEmpty(localizationOptions.ResourceFilePath);
+
         _resourceHandlerService = resourceHandlerService;
+
+        var hubUrlWithHeaders = localizationOptions.ManagerUrl;
+        hubUrlWithHeaders += "/hubs/localization-hub";
+        hubUrlWithHeaders += $"?appId={localizationOptions.AppId}";
+        hubUrlWithHeaders += $"&appName={localizationOptions.AppName}";
+        hubUrlWithHeaders += $"&supportedLanguages={localizationOptions.SupportedLanguages}";
 
         _connection = new HubConnectionBuilder()
             .WithUrl(localizationOptions.ManagerUrl, options =>
             {
-                options.Headers.Add("appId", localizationOptions.AppId);
-                options.Headers.Add("appName", localizationOptions.AppName);
+                options.Url = new Uri(hubUrlWithHeaders);
             })
             .WithAutomaticReconnect()
             .Build();
@@ -30,7 +41,11 @@ public class SignalRConnectorService : IAsyncDisposable
             {
                 if (!task.IsFaulted)
                 {
-                    Console.WriteLine("Connection Started");
+                    Console.WriteLine("LocalizationManager connection succeeded!");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to connect to LocalizationManager!");
                 }
             });
     }

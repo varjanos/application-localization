@@ -7,6 +7,8 @@ public class ResourceHandlerService(LocalizationOptions localizationOptions) : I
 {
     public void HandleLocalizationAdded(string language, string key, string value)
     {
+        Console.WriteLine("HandleLocalizationAdded called!");
+
         string fileName = $"Resource{language}.resx";
         var reader = new ResourceReader(localizationOptions.ResourceFilePath + fileName);
         var node = reader.GetEnumerator();
@@ -22,6 +24,8 @@ public class ResourceHandlerService(LocalizationOptions localizationOptions) : I
 
     public void HandleLocalizationUpdated(string language, string key, string value)
     {
+        Console.WriteLine("HandleLocalizationUpdated called!");
+
         string fileName = $"Resource{language}.resx";
         var reader = new ResourceReader(localizationOptions.ResourceFilePath + fileName);
         var node = reader.GetEnumerator();
@@ -41,6 +45,8 @@ public class ResourceHandlerService(LocalizationOptions localizationOptions) : I
 
     public void HandleLocalizationDeleted(string language, string key)
     {
+        Console.WriteLine("HandleLocalizationDeleted called!");
+
         string fileName = $"Resource{language}.resx";
         var reader = new ResourceReader(localizationOptions.ResourceFilePath + fileName);
         var node = reader.GetEnumerator();
