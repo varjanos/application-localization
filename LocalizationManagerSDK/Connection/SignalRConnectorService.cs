@@ -30,7 +30,7 @@ public class SignalRConnectorService : IAsyncDisposable
             {
                 if (!task.IsFaulted)
                 {
-                    // TODO: handle
+                    Console.WriteLine("Connection Started");
                 }
             });
     }
