@@ -13,10 +13,18 @@ public class LocalizationController(
     ILogger<LocalizationController> _logger) : ControllerBase
 {
     [HttpGet]
-    public async Task<List<LocalizationValueDto>> GetLocalizationValues(int clientId)
-        => await _localizationService.GetLocalizationValuesAsync(clientId);
+    public async Task<List<LocalizationValueDto>> GetLocalizationValues(string appId)
+        => await _localizationService.GetLocalizationValuesAsync(appId);
 
     [HttpPost]
-    public async Task AddOrUpdateLocalizationValue([FromBody] LocalizationValueDto request)
-        => await _localizationService.AddOrUpdateLocalizationValueAsync(request);
+    public async Task AddLocalizationValue([FromBody] LocalizationValueDto request)
+        => await _localizationService.AddLocalizationValueAsync(request);
+
+    [HttpPut]
+    public async Task UpdateLocalizationValue([FromBody] LocalizationValueDto request)
+        => await _localizationService.UpdateLocalizationValueAsync(request);
+
+    [HttpDelete]
+    public async Task DeleteLocalizationValue([FromBody] LocalizationValueDto request)
+        => await _localizationService.DeleteLocalizationValueAsync(request);
 }

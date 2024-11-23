@@ -3,9 +3,10 @@
 public class RegisteredApplication
 {
     public int Id { get; set; }
-    public string AppName { get; set; } = null!;
-    public string AppUrl { get; set; } = null!;
+
+    public required string AppId { get; set; } = null!;
+    public required string AppName { get; set; } = null!;
 
     // Contains the languge codes joined by ';'
-    public string SupportedLanguages { get; set; } = null!;
+    public required string SupportedLanguages { get; set; } = null!;
 }

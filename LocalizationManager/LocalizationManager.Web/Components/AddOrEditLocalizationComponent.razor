@@ -8,7 +8,7 @@
         <MudForm @ref="form">
             <MudGrid Spacing="2">
                 <MudItem xs="6">
-                    <MudTextField @bind-Value="_localizationValueDto.ClientId" Label="Client ID" Variant="Variant.Outlined" Required="true" />
+                    <MudTextField @bind-Value="_localizationValueDto.AppId" Label="App ID" Variant="Variant.Outlined" Required="true" />
                 </MudItem>
 
                 <MudItem xs="6">
@@ -43,6 +43,8 @@
 
     [Parameter] public LocalizationValueDto? LocalizationValue { get; set; } = null;
 
+    private bool IsEdit = false;
+
     public List<LanguageDto> Languages { get; set; } = [ new LanguageDto { LanguageCode = "hu", LanguageName = "Hungarian" } ];
 
     private LocalizationValueDto _localizationValueDto = new();
@@ -55,11 +57,13 @@
         {
             _localizationValueDto = new LocalizationValueDto
             {
-                ClientId = LocalizationValue.ClientId,
+                AppId = LocalizationValue.AppId,
                 Key = LocalizationValue.Key,
                 LanguageCode = LocalizationValue.LanguageCode,
                 Value = LocalizationValue.Value
             };
+
+            IsEdit = true;
         }
     }
 
@@ -69,7 +73,14 @@
 
         if (form.IsValid)
         {
-            await LocalizationClient.AddOrUpdateLocalizationValueAsync(_localizationValueDto);
+            if (IsEdit)
+            {
+                await LocalizationClient.UpdateLocalizationValueAsync(_localizationValueDto);
+            }
+            else
+            {
+                await LocalizationClient.AddLocalizationValueAsync(_localizationValueDto);
+            }
 
             MudDialog.Close(DialogResult.Ok(_localizationValueDto));
         }

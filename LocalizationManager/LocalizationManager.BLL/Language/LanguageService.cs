@@ -15,8 +15,7 @@ internal class LanguageService(LocalizationDbContext _dbContext) : ILanguageServ
 
     public async Task<List<LanguageDto>> GetSupportedLanguagesForApplicationAsync(int applicationId)
     {
-        var app = await _dbContext.RegisteredApplications
-            .SingleAsync(x => x.Id == applicationId);
+        var app = await _dbContext.RegisteredApplications.SingleAsync(x => x.Id == applicationId);
 
         var languages = await GetAllLanguagesAsync();
 

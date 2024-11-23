@@ -18,18 +18,23 @@
 <MudTable T="LocalizationValueDto" Items="_localizationValues" Dense Bordered Striped>
     <ToolBarContent>
         <MudText Typo="Typo.h6">Localization Values</MudText>
+
         <MudSpacer />
-        
+
         <div style="width: 300px;" class="mr-5">
-            <MudSelect T="int" Label="Select Application" Variant="Variant.Outlined" Value="selectedAppId" ValueChanged="OnApplicationSelected">
+            <MudSelect T="string" Label="Select Application" Variant="Variant.Outlined" Value="selectedAppId" ValueChanged="OnApplicationSelected">
                 @foreach (var app in _registeredApplications)
                 {
-                    <MudSelectItem T="int" Value="app.Id">
+                    <MudSelectItem T="string" Value="app.AppId">
                         @app.AppName
                     </MudSelectItem>
                 }
             </MudSelect>
         </div>
+
+        <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Text" Class="mr-5" OnClick="@LoadDataAsync">
+            Refresh data
+        </MudIconButton>
 
         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@AddLocalizationValue">
             Add new localization value
@@ -60,7 +65,7 @@
 
     private IList<ApplicationDto> _registeredApplications = [];
 
-    private int selectedAppId = 0;
+    private string selectedAppId = null!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,7 +73,7 @@
 
         if (_registeredApplications.Count == 0) { return; }
 
-        selectedAppId = _registeredApplications.First().Id;
+        selectedAppId = _registeredApplications.First().AppId;
 
         await LoadDataAsync();
 
@@ -77,7 +82,7 @@
 
     private async Task LoadDataAsync()
     {
-        if(selectedAppId == 0) { return; }
+        if (string.IsNullOrEmpty(selectedAppId)) { return; }
 
         _localizationValues = await LocalizationClient.GetLocalizationValuesAsync(selectedAppId);
 
@@ -86,7 +91,7 @@
         StateHasChanged();
     }
 
-    private async Task OnApplicationSelected(int selectedAppId)
+    private async Task OnApplicationSelected(string selectedAppId)
     {
         this.selectedAppId = selectedAppId;
 
