@@ -1,4 +1,5 @@
-﻿using LocalizationManagerSDK.Connection;
+﻿using LocalizationManagerSDK.Abstractions;
+using LocalizationManagerSDK.Connection;
 using LocalizationManagerSDK.Localizer;
 using LocalizationManagerSDK.Options;
 using LocalizationManagerSDK.ResourceHandler;

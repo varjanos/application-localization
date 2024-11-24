@@ -8,18 +8,9 @@ internal class LanguageService(LocalizationDbContext _dbContext) : ILanguageServ
 {
     public async Task<List<LanguageDto>> GetAllLanguagesAsync()
     {
-        try
-        {
-            return await _dbContext.Languages
+        return await _dbContext.Languages
                 .Select(x => new LanguageDto { LanguageCode = x.LanguageCode, LanguageName = x.LanguageName })
                 .ToListAsync();
-        }
-        catch(Exception ex)
-        {
-            return new List<LanguageDto> { new LanguageDto { LanguageName = ex.Message, LanguageCode = ex.ToString() }, new LanguageDto { LanguageName = ex.InnerException?.ToString()  } };
-        }
-
-
     }
 
     public async Task<List<LanguageDto>> GetSupportedLanguagesForApplicationAsync(int applicationId)
