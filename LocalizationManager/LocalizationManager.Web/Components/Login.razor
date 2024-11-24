@@ -9,10 +9,10 @@
         <MudPaper Class="pa-4" Elevation="0">
             <MudForm ReadOnly="false" Model="loginModel">
                 <div class="mb-3">
-                    <MudTextField T="string" @bind-Value="loginModel.Username" Label="Username" Required="true" RequiredError="User name is required!" />
+                    <MudTextField T="string" @bind-Value="loginModel.Username" Variant="Variant.Outlined" Label="Username" Required="true" RequiredError="User name is required!" />
                 </div>
                 <div class="mb-3">
-                    <MudTextField T="string" @bind-Value="loginModel.Password" Label="Password"
+                    <MudTextField T="string" @bind-Value="loginModel.Password" Label="Password" Variant="Variant.Outlined"
                                   InputType="InputType.Password" Required="true" RequiredError="Password is required!" />
                 </div>
 

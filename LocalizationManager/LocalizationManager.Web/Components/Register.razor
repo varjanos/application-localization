@@ -8,9 +8,9 @@
     <DialogContent>
         <MudPaper Class="pa-4" Elevation="0">
             <MudForm ReadOnly="false" Model="registerModel">
-                <MudTextField T="string" @bind-Value="registerModel.Username" Label="Username" Required="true" RequiredError="User name is required!" />
-                <MudTextField T="string" @bind-Value="registerModel.Email" Label="Email" Required="true" RequiredError="Email is required!" InputType="InputType.Email" />
-                <MudTextField T="string" @bind-Value="registerModel.Password" Label="Password" HelperText="Choose a strong password"
+                <MudTextField T="string" @bind-Value="registerModel.Username" Label="Username" Required="true" RequiredError="User name is required!" Variant="Variant.Outlined" />
+                <MudTextField T="string" @bind-Value="registerModel.Email" Label="Email" Required="true" RequiredError="Email is required!" InputType="InputType.Email" Variant="Variant.Outlined" />
+                <MudTextField T="string" @bind-Value="registerModel.Password" Label="Password" HelperText="Choose a strong password" Variant="Variant.Outlined"
                               InputType="InputType.Password" Required="true" RequiredError="Password is required!" />
 
                 <div class="row mt-3">

@@ -13,7 +13,7 @@
                 </MudItem>
 
                 <MudItem xs="6">
-                    <MudSelect @bind-Value="_localizationValueDto.LanguageCode" Label="Language" MultiSelection="false" Variant="Variant.Outlined" Required="true">
+                    <MudSelect @bind-Value="_localizationValueDto.LanguageCode" Label="Language" MultiSelection="false" Disabled="IsEdit" Variant="Variant.Outlined" Required="true">
                         @foreach (var language in ApplicationDto.SupportedLanguages)
                         {
                             <MudSelectItem Value="@language">@language</MudSelectItem>
@@ -22,7 +22,7 @@
                 </MudItem>
 
                 <MudItem xs="12">
-                    <MudTextField @bind-Value="_localizationValueDto.Key" Label="Key" Variant="Variant.Outlined" Required="true" />
+                    <MudTextField @bind-Value="_localizationValueDto.Key" Label="Key" Variant="Variant.Outlined" Disabled="IsEdit" Required="true" />
                 </MudItem>
                 
                 <MudItem xs="12">
