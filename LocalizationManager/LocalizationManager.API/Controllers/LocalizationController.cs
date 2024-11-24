@@ -7,7 +7,7 @@ namespace LocalizationManager.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[AllowAnonymous]
 public class LocalizationController(
     ILocalizationService _localizationService,
     ILogger<LocalizationController> _logger) : ControllerBase
