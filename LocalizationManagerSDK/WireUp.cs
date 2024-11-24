@@ -12,7 +12,7 @@ public static class WireUp
 {
     public static void RegisterLocalizationManager(this IServiceCollection services, Options.LocalizationOptions options)
     {
-        services.AddScoped<IResourceHandlerService, ResourceHandlerService>();
+        services.AddSingleton<IResourceHandlerService, ResourceHandlerService>();
 
         services.AddSingleton(options);
 

@@ -1,6 +1,7 @@
 using LocalizationClient.Resources;
 using LocalizationClient.View;
 using Microsoft.Extensions.Localization;
+using LocalizationManagerSDK;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,17 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddLocalization();
 builder.Services.AddControllers();
+
+var LocalizationManagerSDKOptions = new LocalizationManagerSDK.Options.LocalizationOptions()
+{
+    ManagerUrl = "https://localizationmanager.azurewebsites.net",
+    AppName = "DemoClient2",
+    AppId = "6110d570-fb2d-4421-0001-0b698ca6defe",
+    SupportedLanguages = "en;hu;ru;fr",
+    ResourceFilePath = "/Resources/"
+};
+
+builder.Services.RegisterLocalizationManager(LocalizationManagerSDKOptions);
 
 var app = builder.Build();
 
