@@ -11,7 +11,7 @@
 
 @attribute [Authorize]
 
-<MudTable T="ApplicationDto" Items="_applications" Hover="true" Bordered="true" Elevation="1">
+<MudTable T="ApplicationDto" Items="_applications" Hover="true" Bordered="true" Elevation="1" Loading="IsLoading">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Applications</MudText>
 
@@ -55,6 +55,8 @@
 @code {
     private IList<ApplicationDto> _applications = [];
 
+    private bool IsLoading = false;
+
     protected override async Task OnInitializedAsync()
     {
         await LoadDataAsync();
@@ -64,7 +66,11 @@
 
     private async Task LoadDataAsync()
     {
+        IsLoading = true;
+
         _applications = await ApplicationClient.GetRegisteredApplicationsAsync();
+
+        IsLoading = false;
 
         StateHasChanged();
     }
@@ -97,10 +103,17 @@
 
     private async Task DeleteApplicationAsync(ApplicationDto dto)
     {
+        bool? result = await DialogService.ShowMessageBox(
+            "Delete application",
+            "Are you sure, you want to delete the application?",
+            yesText: "Yes", noText: "Cancel"
+        );
+
+        if (!(result.HasValue && result.Value))
+            return;
+
         await ApplicationClient.DeleteApplicationAsync(dto);
 
-        _applications.Remove(dto);
-
-        StateHasChanged();
+        await LoadDataAsync();
     }
 }

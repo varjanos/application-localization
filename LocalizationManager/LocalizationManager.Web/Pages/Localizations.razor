@@ -123,6 +123,7 @@
         var parameters = new DialogParameters<AddOrEditLocalizationComponent>();
 
         parameters.Add(x => x.LocalizationValue, item);
+        parameters.Add(x => x.ApplicationDto, _registeredApplications.Single(x => x.AppId == selectedAppId));
 
         var result = await (await DialogService.ShowAsync<AddOrEditLocalizationComponent>(
             "Edit localization value",
@@ -142,6 +143,8 @@
 
         if (!(result.HasValue && result.Value))
             return;
+
+        await LocalizationClient.DeleteLocalizationValueAsync(item);
 
         await LoadDataAsync();
     }
