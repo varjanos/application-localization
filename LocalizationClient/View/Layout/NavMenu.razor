@@ -1,6 +1,11 @@
-﻿<div class="top-row ps-3 navbar navbar-dark" style="background-color:cornsilk">
+﻿@using Microsoft.Extensions.Localization
+@using LocalizationClient.Resources
+@using System.Globalization
+@inject IStringLocalizer<Resource> Localizer
+
+<div class="top-row ps-3 navbar navbar-dark" style="background-color:cornsilk">
     <div class="container-fluid">
-        <a class="navbar-brand" style="color:black" href="">LocalizationClient</a>
+        <a class="navbar-brand" style="color:black" href="">@Localizer["LocalizationClient"]</a>
     </div>
 </div>
 
@@ -10,12 +15,7 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="localdate">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Local Date
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> @Localizer["MenuHome"]
             </NavLink>
         </div>
     </nav>

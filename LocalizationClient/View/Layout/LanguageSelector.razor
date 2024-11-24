@@ -1,0 +1,42 @@
+﻿@using System.Globalization
+@inject NavigationManager navigate
+@using Microsoft.Extensions.Localization
+@using LocalizationClient.Resources
+@using System.Resources
+@using System.Reflection
+@inject IStringLocalizer<Resource> Localizer
+
+
+<div>
+    <select @bind="Culture">
+        <option value="hu">@Localizer["LanguageHU"]</option>
+        <option value="en">@Localizer["LanguageEN"]</option>
+    </select>
+</div>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        Culture = CultureInfo.CurrentCulture;
+    }
+
+    private CultureInfo Culture
+    {
+        get
+        {
+            return CultureInfo.CurrentCulture;
+        }
+        set
+        {
+            if (CultureInfo.CurrentCulture != value)
+            {
+                var uri = new Uri(navigate.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+                var cultureEscaped = Uri.EscapeDataString(value.Name);
+                var uriEscaped = Uri.EscapeDataString(uri);
+
+                navigate.NavigateTo($"Localization/Set?culture={cultureEscaped}&redirectUri={uriEscaped}", forceLoad: true);
+            }
+        }
+    }
+}

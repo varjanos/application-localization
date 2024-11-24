@@ -63,18 +63,9 @@ namespace LocalizationClient.Resources {
         /// <summary>
         ///   Looks up a localized string similar to In this application we showcase how to change the language and the culture in real time using our SDK.
         /// </summary>
-        public static string AppDescription {
+        public static string Description {
             get {
-                return ResourceManager.GetString("AppDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home.
-        /// </summary>
-        public static string Home {
-            get {
-                return ResourceManager.GetString("Home", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -88,7 +79,7 @@ namespace LocalizationClient.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the language to your preference.
+        ///   Looks up a localized string similar to Change the language to your preference using the dropdown menu.
         /// </summary>
         public static string HowToUse1 {
             get {
@@ -97,47 +88,11 @@ namespace LocalizationClient.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hover over to the Local Date page.
+        ///   Looks up a localized string similar to You will see the changes instantly.
         /// </summary>
         public static string HowToUse2 {
             get {
                 return ResourceManager.GetString("HowToUse2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You will be able to see the data in your culture.
-        /// </summary>
-        public static string HowToUse3 {
-            get {
-                return ResourceManager.GetString("HowToUse3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If you select the Hungarian language the data on the Local Date page will show in Hungarian culture.
-        /// </summary>
-        public static string SubTitle {
-            get {
-                return ResourceManager.GetString("SubTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For example the average temperatures will be shown in Celsius.
-        /// </summary>
-        public static string SubTitleDescription {
-            get {
-                return ResourceManager.GetString("SubTitleDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Welcome to the LocalizationClient web application!.
-        /// </summary>
-        public static string Title {
-            get {
-                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         
@@ -147,6 +102,15 @@ namespace LocalizationClient.Resources {
         public static string TryItOut {
             get {
                 return ResourceManager.GetString("TryItOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to the Localization Client web application!.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }
