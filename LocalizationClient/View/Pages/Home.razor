@@ -1,20 +1,21 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Localization
+@using LocalizationClient.Resources
+@using System.Globalization
+@using System.Xml
+@using System.Resources
+@inject IStringLocalizer<Resource> Localizer
 
 <PageTitle>Home</PageTitle>
 
-<h1>Welcome to the LocalizationClient web application!</h1>
+<h1>@Localizer["Welcome"]</h1>
 <br />
-<p>In this application we showcase how to change the language and the culture in real time using our SDK</p>
+<p>@Localizer["Description"]</p>
 <hr />
-<h3>If you select the Hungarian language the data on the Local Date page will show in Hungarian culture</h3>
-<br />
-<p>For example the average temperatures will be shown in Celsius</p>
-<br />
-<h4>How to use</h4>
+<h4>@Localizer["HowToUse"]</h4>
 <ol>
-    <li>Change the language to your preference</li>
-    <li>Hover over to the Local Date page</li>
-    <li>You will be able to see the data in your culture</li>
+    <li>@Localizer["HowToUse1"]</li>
+    <li>@Localizer["HowToUse2"]</li>
 </ol>
 <br />
-<h4>Try it out!</h4>
+<h4>@Localizer["TryItOut"]</h4>

@@ -1,15 +1,19 @@
 ﻿@inherits LayoutComponentBase
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
-
-    <main>
-        <div class="top-row px-4">
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <main>
+            <div class="top-row px-4">
+                <label for="languages">Choose a language </label>&nbsp;
+                <select name="languages" id="languages">
+                    <option value="hungarian">Hungarian</option>
+                    <option value="english">English</option>
+                </select>
+            </div>
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+ </div>

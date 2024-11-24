@@ -1,19 +1,19 @@
+using LocalizationClient.Resources;
 using LocalizationClient.View;
-using LocalizationClient.ViewModels;
+using Microsoft.Extensions.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddScoped<LoginViewModel>();
-builder.Services.AddScoped<RegisterViewModel>();
-builder.Services.AddScoped<LocalDateViewModel>();
+
 builder.Services.AddLocalization();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-string[] appCultures = ["en-UK", "h-Hun"];
+string[] appCultures = ["hu", "en"];
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture(appCultures[0])
     .AddSupportedCultures(appCultures)
@@ -32,6 +32,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.MapControllers();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
