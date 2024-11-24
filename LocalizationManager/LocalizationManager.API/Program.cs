@@ -82,7 +82,7 @@ app.UseStaticFiles();
 
 app.MapControllers();
 
-app.MapHub<LocalizationHub>("/hubs/localization-hub");
+app.MapHub<LocalizationHub>("/hubs/localization-hub"); // SignalR endpoint
 
 app.MapFallbackToFile("index.html");
 
