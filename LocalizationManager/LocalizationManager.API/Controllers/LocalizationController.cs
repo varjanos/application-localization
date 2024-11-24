@@ -7,10 +7,9 @@ namespace LocalizationManager.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
+[Authorize]
 public class LocalizationController(
-    ILocalizationService _localizationService,
-    ILogger<LocalizationController> _logger) : ControllerBase
+    ILocalizationService _localizationService) : ControllerBase
 {
     [HttpGet]
     public async Task<List<LocalizationValueDto>> GetLocalizationValues(string appId)
