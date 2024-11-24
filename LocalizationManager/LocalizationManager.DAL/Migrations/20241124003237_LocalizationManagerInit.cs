@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LocalizationManager.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialLocalizationMigration : Migration
+    public partial class LocalizationManagerInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,7 @@ namespace LocalizationManager.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClientId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LanguageCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -80,6 +80,21 @@ namespace LocalizationManager.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LocalizationValues", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RegisteredApplications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SupportedLanguages = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegisteredApplications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -441,6 +456,9 @@ namespace LocalizationManager.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "LocalizationValues");
+
+            migrationBuilder.DropTable(
+                name: "RegisteredApplications");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

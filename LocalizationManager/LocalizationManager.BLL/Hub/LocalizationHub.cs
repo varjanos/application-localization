@@ -1,4 +1,5 @@
 ﻿using LocalizationManager.BLL.Application;
+using LocalizationManager.BLL.SdkLocalizer;
 using LocalizationManager.Transfer.Application;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,7 @@ namespace LocalizationManager.BLL.Hub;
 
 public class LocalizationHub(
     ILogger<LocalizationHub> _logger,
+    ISdkLocalizerService _sdkLocalizerService,
     IApplicationManagingService _applicationManagingService) : Hub<ILocalizationClient>
 {
     public override async Task OnConnectedAsync()
@@ -27,6 +29,10 @@ public class LocalizationHub(
             await Groups.AddToGroupAsync(Context.ConnectionId, applicationDto.AppId);
 
             _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", applicationDto.AppId, Context.ConnectionId);
+
+            var data = await _sdkLocalizerService.GetLocalizationsAsync(applicationDto.AppId);
+
+            await Clients.Caller.SendAllLocalizations(data);
 
         } catch(Exception)
         {
@@ -55,6 +61,8 @@ public class LocalizationHub(
 
 public interface ILocalizationClient
 {
+    Task SendAllLocalizations(Dictionary<string, Dictionary<string, string>> dictionary);
+
     Task SendLocalizationAdded(string language, string key, string value);
 
     Task SendLocalizationUpdated(string language, string key, string value);

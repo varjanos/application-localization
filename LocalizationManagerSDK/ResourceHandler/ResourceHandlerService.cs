@@ -1,25 +1,15 @@
-﻿using LocalizationManagerSDK.Options;
+﻿using LocalizationManagerSDK.Localizer;
+using LocalizationManagerSDK.Options;
 using System.Resources;
 
 namespace LocalizationManagerSDK.ResourceHandler;
 
-public class ResourceHandlerService(LocalizationOptions localizationOptions) : IResourceHandlerService
+public class ResourceHandlerService(
+    LocalizationOptions localizationOptions) : IResourceHandlerService
 {
     public void HandleLocalizationAdded(string language, string key, string value)
     {
-        Console.WriteLine("HandleLocalizationAdded called!");
-
-        string fileName = $"Resource{language}.resx";
-        var reader = new ResourceReader(localizationOptions.ResourceFilePath + fileName);
-        var node = reader.GetEnumerator();
-        var writer = new ResourceWriter(localizationOptions.ResourceFilePath + fileName);
-        while (node.MoveNext())
-        {
-            writer.AddResource(node.Key.ToString(), node.Value.ToString());
-        }
-        writer.AddResource(key, value);
-        writer.Generate();
-        writer.Close();
+        Console.WriteLine("TODO");
     }
 
     public void HandleLocalizationUpdated(string language, string key, string value)

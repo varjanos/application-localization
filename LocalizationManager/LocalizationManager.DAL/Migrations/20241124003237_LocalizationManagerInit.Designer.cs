@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocalizationManager.DAL.Migrations
 {
     [DbContext(typeof(LocalizationDbContext))]
-    [Migration("20241123170855_FixedEntities")]
-    partial class FixedEntities
+    [Migration("20241124003237_LocalizationManagerInit")]
+    partial class LocalizationManagerInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1157,9 +1157,6 @@ namespace LocalizationManager.DAL.Migrations
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Key")
                         .IsRequired()

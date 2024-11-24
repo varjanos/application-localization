@@ -2,6 +2,7 @@
 @using LocalizationManager.Web.Services
 
 @inject IAuthService authService
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <DialogContent>
@@ -32,7 +33,16 @@
 
     private async Task HandleLoginAsync()
     {
-        await authService.LoginAsync(loginModel);
+        try
+        {
+            await authService.LoginAsync(loginModel);
+
+            Snackbar.Add("Successful login!", Severity.Success);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to login!", Severity.Error);
+        }
 
         dialogReference.Close(DialogResult.Ok(true));
     }

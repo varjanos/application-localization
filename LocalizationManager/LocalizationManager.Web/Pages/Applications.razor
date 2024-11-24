@@ -2,9 +2,12 @@
 
 @using LocalizationManager.Transfer.Application;
 @using LocalizationManager.Web.Client;
+@using LocalizationManager.Web.Components
+@using LocalizationManager.Web.Options
 @using Microsoft.AspNetCore.Authorization
 
 @inject IApplicationClient ApplicationClient
+@inject IDialogService DialogService
 
 @attribute [Authorize]
 
@@ -68,12 +71,28 @@
 
     private async Task AddApplicationAsync()
     {
+        var parameters = new DialogParameters<AddOrEditApplicationComponent>();
 
+        var result = await (await DialogService.ShowAsync<AddOrEditApplicationComponent>(
+            "Register new application",
+            parameters,
+            MudDialogOptions.LocalizationDialogOptions)).Result;
+
+        await LoadDataAsync();
     }
 
     private async Task EditApplicationAsync(ApplicationDto dto)
     {
+        var parameters = new DialogParameters<AddOrEditApplicationComponent>();
 
+        parameters.Add(x => x.application, dto);
+
+        var result = await (await DialogService.ShowAsync<AddOrEditApplicationComponent>(
+            "Edit application data",
+            parameters,
+            MudDialogOptions.LocalizationDialogOptions)).Result;
+
+        await LoadDataAsync();
     }
 
     private async Task DeleteApplicationAsync(ApplicationDto dto)
