@@ -1,0 +1,78 @@
+name: Deploy LocalizationManager
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  ASPNETCORE_ENVIRONMENT: 'Production'
+  AZURE_WEBAPP_NAME: LocalizationManager
+
+on:
+  push:
+    branches:
+      - release
+    paths-ignore:
+      - 'appsettings.Development.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Replacing appsettings.json values with secret
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './LocalizationManager/LocalizationManager.API/appsettings.json'
+        env:
+          ConnectionStrings.DefaultConnection: ${{ secrets.LOCALIZATIONMANAGER_CONNECTIONSTRING }}
+          Jwt.Key: ${{ secrets.JWT_KEY }}
+
+      - name: Set Environment to '${{ env.ASPNETCORE_ENVIRONMENT }}'
+        run: export ASPNETCORE_ENVIRONMENT=${{ env.ASPNETCORE_ENVIRONMENT }}
+
+      - name: Install dependencies
+        run: dotnet restore ./LocalizationManager/LocalizationManager.API/LocalizationManager.API.csproj
+
+      - name: Build
+        run: dotnet build ./LocalizationManager/LocalizationManager.API/LocalizationManager.API.csproj -c Release --property WarningLevel=0 --no-restore 
+
+      - name: Publish
+        run: dotnet publish ./LocalizationManager/LocalizationManager.API/LocalizationManager.API.csproj -c Release -o ${{env.DOTNET_ROOT}}/LocalizationManager --no-build
+
+      - name: Install dotnet-ef
+        run: dotnet tool install --global dotnet-ef --version 8.*
+
+      - name: Export PATH
+        run: export PATH="$PATH:$HOME/.dotnet/tools"
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+            name: .net-app
+            path: ${{env.DOTNET_ROOT}}/LocalizationManager
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+      
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}

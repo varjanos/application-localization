@@ -1,0 +1,105 @@
+﻿@using LocalizationManager.Transfer.Application
+@using LocalizationManager.Transfer.LocalizationDtos
+@using LocalizationManager.Web.Client
+
+@inject ILanguageClient LanguageClient
+@inject IApplicationClient ApplicationClient
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form">
+            <MudGrid Spacing="2">
+                @if (application != null && AllLanguages != null)
+                {
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="App ID" @bind-Value="application.AppId" Variant="Variant.Outlined" Disabled="@IsEdit" Required="true" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="App Name" @bind-Value="application.AppName" Variant="Variant.Outlined" Required="true" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudSelect T="string" Label="Supported Languages"
+                                   SelectedValues="@SelectedValues"
+                                   SelectedValuesChanged="@SelectedValuesChanged"
+                            MultiSelection="true" Variant="Variant.Outlined" Required="true">
+                            @foreach (var language in AllLanguages)
+                            {
+                                <MudSelectItem T="string" Value="@language.LanguageCode">@language.LanguageName (@language.LanguageCode)</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem> 
+                }
+                else
+                {
+                    <MudProgressLinear Indeterminate Class="w-100" /> 
+                }
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="() => MudDialog.Close()" Color="Color.Secondary">Cancel</MudButton>
+
+        <MudSpacer />
+
+        <MudButton OnClick="OnSaveAsync" Color="Color.Primary">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter] public ApplicationDto? application { get; set; } = null!;
+
+    private bool IsEdit = false;
+
+    private IEnumerable<string> SelectedValues = [];
+
+    private List<LanguageDto> AllLanguages = [];
+
+    private MudForm form;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        IsEdit = application == null;
+
+        if(application == null)
+        {
+            IsEdit = false;
+            application = new();
+        }
+        else
+        {
+            SelectedValues = application.SupportedLanguages;
+            IsEdit = true;
+        }
+
+        AllLanguages = (await LanguageClient.GetAllLanguagesAsync()).ToList();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private void SelectedValuesChanged(IEnumerable<string> selectedValues)
+    {
+        SelectedValues = selectedValues.ToList();
+    }
+
+    private async Task OnSaveAsync()
+    {
+        if(!form.IsValid || application is null){ return; }
+
+        application.SupportedLanguages = SelectedValues.ToList();
+
+        if (IsEdit)
+        {
+            await ApplicationClient.UpdateApplicationAsync(application);
+        }
+        else
+        {
+            await ApplicationClient.RegisterApplicationAsync(application);
+        }
+
+        MudDialog.Close(application);
+    }
+}

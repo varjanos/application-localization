@@ -70,6 +70,8 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -80,7 +82,7 @@ app.UseStaticFiles();
 
 app.MapControllers();
 
-app.MapHub<LocalizationHub>("/hubs/localization-hub");
+app.MapHub<LocalizationHub>("/hubs/localization-hub"); // SignalR endpoint
 
 app.MapFallbackToFile("index.html");
 

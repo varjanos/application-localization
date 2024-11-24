@@ -3,6 +3,8 @@
 public class LocalizationValueDto
 {
     public int ClientId { get; set; }
+
+    public string AppId { get; set; } = null!;
     public string Key { get; set; } = null!;
     public string LanguageCode { get; set; } = null!;
 

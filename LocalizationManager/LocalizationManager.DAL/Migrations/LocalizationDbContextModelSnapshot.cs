@@ -1151,8 +1151,9 @@ namespace LocalizationManager.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
+                    b.Property<string>("AppId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Key")
                         .IsRequired()
@@ -1179,11 +1180,11 @@ namespace LocalizationManager.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppName")
+                    b.Property<string>("AppId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppUrl")
+                    b.Property<string>("AppName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

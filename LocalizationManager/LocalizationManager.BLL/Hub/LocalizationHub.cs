@@ -1,30 +1,58 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using LocalizationManager.BLL.Application;
+using LocalizationManager.BLL.SdkLocalizer;
+using LocalizationManager.Transfer.Application;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 
 namespace LocalizationManager.BLL.Hub;
 
-public class LocalizationHub(ILogger<LocalizationHub> _logger) : Hub<ILocalizationClient>
+public class LocalizationHub(
+    ILogger<LocalizationHub> _logger,
+    ISdkLocalizerService _sdkLocalizerService,
+    IApplicationManagingService _applicationManagingService) : Hub<ILocalizationClient>
 {
     public override async Task OnConnectedAsync()
     {
-        var appId = Context.GetHttpContext()?.Request.Query["appId"];
-        var appName = Context.GetHttpContext()?.Request.Query["appName"];
+        var context = Context.GetHttpContext() ?? throw new Exception("Something went wrong with the connection!");
 
-        if (!string.IsNullOrEmpty(appId))
+        var applicationDto = new ApplicationDto();
+
+        try
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, appId!);
+            applicationDto.AppId = context.Request.Query["appId"].Single() ?? "";
+            applicationDto.AppName = context.Request.Query["appName"].Single() ?? "";
+            applicationDto.SupportedLanguages = context.Request.Query["supportedLanguages"].Single()!.Split(';').ToList();
 
-            _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", appId, Context.ConnectionId);
+            await _applicationManagingService.RegisterApplicationAsync(applicationDto);
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, applicationDto.AppId);
+
+            _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", applicationDto.AppId, Context.ConnectionId);
+
+            try
+            {
+                var dictionary = await _sdkLocalizerService.GetLocalizationsAsync(applicationDto.AppId);
+
+                await Clients.Caller.SendAllLocalizations(dictionary);
+
+            } catch(Exception ex)
+            {
+                _logger.LogError($"Failed to retrieve previous localizations for app: {applicationDto.AppId}");
+            }
+        } catch(Exception)
+        {
+            _logger.LogInformation("Client with connectionId: {connectionId} failed to connect!", Context.ConnectionId);
         }
-
-        
 
         await base.OnConnectedAsync();
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var appId = Context.GetHttpContext()?.Request.Query["appId"];
+        var context = Context.GetHttpContext() ?? throw new Exception("Something went wrong with the connection!");
+
+        var appId = context.Request.Query["appId"];
 
         if (!string.IsNullOrEmpty(appId))
         {
@@ -39,6 +67,8 @@ public class LocalizationHub(ILogger<LocalizationHub> _logger) : Hub<ILocalizati
 
 public interface ILocalizationClient
 {
+    Task SendAllLocalizations(Dictionary<string, Dictionary<string, string>> dictionary);
+
     Task SendLocalizationAdded(string language, string key, string value);
 
     Task SendLocalizationUpdated(string language, string key, string value);

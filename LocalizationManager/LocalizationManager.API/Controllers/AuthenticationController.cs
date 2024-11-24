@@ -1,14 +1,14 @@
 ﻿using LocalizationManager.BLL.Authentication;
 using LocalizationManager.Transfer.AuthDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LocalizationManager.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthenticationController(
-    IAuthService _authenticationService,
-    ILogger<AuthenticationController> _logger) : ControllerBase
+[AllowAnonymous]
+public class AuthenticationController(IAuthService _authenticationService) : ControllerBase
 {
     [HttpPost("Register")]
     public async Task<ActionResult> Register([FromBody] RegisterDto model)
@@ -32,6 +32,7 @@ public class AuthenticationController(
     }
 
     [HttpPost("Logout")]
+    [Authorize]
     public async Task<ActionResult> Logout()
     {
         await _authenticationService.LogoutAsync();

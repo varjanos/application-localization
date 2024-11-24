@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocalizationManager.DAL.Migrations
 {
     [DbContext(typeof(LocalizationDbContext))]
-    [Migration("20241118205501_AddedApplicationRegistration")]
-    partial class AddedApplicationRegistration
+    [Migration("20241124003237_LocalizationManagerInit")]
+    partial class LocalizationManagerInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1154,7 +1154,7 @@ namespace LocalizationManager.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClientId")
+                    b.Property<string>("AppId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1183,11 +1183,11 @@ namespace LocalizationManager.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppName")
+                    b.Property<string>("AppId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AppUrl")
+                    b.Property<string>("AppName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

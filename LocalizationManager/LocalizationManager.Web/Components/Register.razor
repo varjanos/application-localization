@@ -2,6 +2,7 @@
 @using LocalizationManager.Web.Services
 
 @inject IAuthService authService
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <DialogContent>
@@ -30,7 +31,17 @@
 
     private async Task HandleRegistrationAsync()
     {
-        await authService.RegisterAsync(registerModel);
+
+        try
+        {
+            await authService.RegisterAsync(registerModel);
+
+            Snackbar.Add("Successful registration!", Severity.Success);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to register!", Severity.Error);
+        }
 
         dialogReference.Close(DialogResult.Ok(true));
     }

@@ -18,12 +18,16 @@ var baseAddress = new Uri(builder.HostEnvironment.BaseAddress);
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = baseAddress });
 
-builder.Services.AddHttpClient(HttpClientNames.ApiHttpClientName, client => client.BaseAddress = baseAddress)
-    .AddHttpMessageHandler(s => new IncludeRequestCredentialsHttpMessageHandler());
+builder.Services.AddTransient<IncludeRequestCredentialsHttpMessageHandler>();
+
+builder.Services
+    .AddHttpClient(HttpClientNames.ApiHttpClientName, client => client.BaseAddress = baseAddress)
+    .AddHttpMessageHandler<IncludeRequestCredentialsHttpMessageHandler>();
 
 builder.Services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(HttpClientNames.ApiHttpClientName);
 builder.Services.AddHttpClient<ILocalizationClient, LocalizationClient>(HttpClientNames.ApiHttpClientName);
 builder.Services.AddHttpClient<IApplicationClient, ApplicationClient>(HttpClientNames.ApiHttpClientName);
+builder.Services.AddHttpClient<ILanguageClient, LanguageClient>(HttpClientNames.ApiHttpClientName);
 
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
