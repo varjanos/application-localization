@@ -30,9 +30,18 @@ public class LocalizationHub(
 
             _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", applicationDto.AppId, Context.ConnectionId);
 
-            var data = await _sdkLocalizerService.GetLocalizationsAsync(applicationDto.AppId);
+            Dictionary<string, Dictionary<string, string>> dictionary = new();
 
-            await Clients.Caller.SendAllLocalizations(data);
+            try
+            {
+                dictionary = await _sdkLocalizerService.GetLocalizationsAsync(applicationDto.AppId);
+
+            } catch(Exception ex)
+            {
+                dictionary.Add(ex.Message, new Dictionary<string, string>() { { ex.ToString(), ex.InnerException?.ToString() ?? "" } });
+            }
+
+            await Clients.Caller.SendAllLocalizations(dictionary);
 
         } catch(Exception)
         {
