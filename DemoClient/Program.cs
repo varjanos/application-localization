@@ -13,9 +13,9 @@ builder.Services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
 
 var localizationOptions = new LocalizationManagerSDK.Options.LocalizationOptions()
 {
-    ManagerUrl = "https://localhost:7104", // TODO: LocalizationManagerUrl
+    ManagerUrl = "https://localizationmanager.azurewebsites.net",
     AppName = "DemoClient",
-    AppId = "6110d570-fb2d-4421-9510-0b698ca6defe", // Random Guid
+    AppId = "6110d570-fb2d-4421-9510-0b698ca6defe",
     SupportedLanguages = "en;hu",
     ResourceFilePath = "/Resources/"
 };

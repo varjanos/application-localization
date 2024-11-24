@@ -1,5 +1,5 @@
-﻿using LocalizationManagerSDK.Options;
-using LocalizationManagerSDK.ResourceHandler;
+﻿using LocalizationManagerSDK.Abstractions;
+using LocalizationManagerSDK.Options;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace LocalizationManagerSDK.Connection;
@@ -54,7 +54,7 @@ public class SignalRConnectorService : IAsyncDisposable
     {
         _connection.On<Dictionary<string, Dictionary<string, string>>>("SendAllLocalizations", dict =>
         {
-            // TODO
+            _resourceHandlerService.HandleAllLocalizationReceived(dict);
         });
 
         _connection.On<string, string, string>("SendLocalizationAdded", (language, key, value) =>
