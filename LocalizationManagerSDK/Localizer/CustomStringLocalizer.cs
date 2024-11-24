@@ -45,13 +45,27 @@ public class CustomStringLocalizer : IStringLocalizer, IUpdateableLocalizer
 
     public void HandleLocalizationAdded(string language, string key, string value)
     {
-        // TODO
+        if (!_localizationData.ContainsKey(language))
+        {
+            _localizationData[language] = new Dictionary<string, string>();
+        }
+
+        if (!_localizationData[language].ContainsKey(key))
+        {
+            _localizationData[language].Add(key, value);
+            Console.WriteLine($"Localization added: Language={language}, Key={key}, Value={value}");
+        }
     }
 
+
     public void HandleLocalizationDeleted(string language, string key, string value)
-    {
-        // TODO
-    }
+        {
+            if (_localizationData.ContainsKey(language) && _localizationData[language].ContainsKey(key))
+            {
+                _localizationData[language].Remove(key);
+                Console.WriteLine($"Localization deleted: Language={language}, Key={key}");
+            }
+        }
 
     public void HandleLocalizationDictReceived(Dictionary<string, Dictionary<string, string>> localizationData)
     {
@@ -59,9 +73,20 @@ public class CustomStringLocalizer : IStringLocalizer, IUpdateableLocalizer
     }
 
     public void HandleLocalizationUpdated(string language, string key, string value)
-    {
-        // TODO 
-    }
+        {
+            if (_localizationData.ContainsKey(language))
+            {
+                if (_localizationData[language].ContainsKey(key))
+                {
+                    _localizationData[language][key] = value;
+                    Console.WriteLine($"Localization updated: Language={language}, Key={key}, Value={value}");
+                }
+            }
+            else
+            {
+                HandleLocalizationAdded(language, key, value);
+            }
+        }
 
     private string? GetLocalizedValue(string key, string culture)
     {
