@@ -1,21 +1,18 @@
 ﻿@page "/"
-@using Microsoft.Extensions.Localization
-@using LocalizationClient.Resources
+@using LocalizationManagerSDK.Services
 @using System.Globalization
-@using System.Xml
-@using System.Resources
-@inject IStringLocalizer<Resource> Localizer
+@inject LocalizationService service
 
 <PageTitle>Home</PageTitle>
 
-<h1>@Localizer["Welcome"]</h1>
+<h1>@service.GetString("Welcome")</h1>
 <br />
-<p>@Localizer["Description"]</p>
+<p>@service.GetString("Description")</p>
 <hr />
-<h4>@Localizer["HowToUse"]</h4>
+<h4>@service.GetString("HowToUse")</h4>
 <ol>
-    <li>@Localizer["HowToUse1"]</li>
-    <li>@Localizer["HowToUse2"]</li>
+    <li>@service.GetString("HowToUse1")</li>
+    <li>@service.GetString("HowToUse2")</li>
 </ol>
 <br />
-<h4>@Localizer["TryItOut"]</h4>
+<h4>@service.GetString("TryItOut")</h4>

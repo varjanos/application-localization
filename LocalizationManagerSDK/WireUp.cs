@@ -1,8 +1,8 @@
 ﻿using LocalizationManagerSDK.Abstractions;
 using LocalizationManagerSDK.Connection;
-using LocalizationManagerSDK.Localizer;
 using LocalizationManagerSDK.Options;
 using LocalizationManagerSDK.ResourceHandler;
+using LocalizationManagerSDK.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
@@ -17,6 +17,8 @@ public static class WireUp
         services.AddSingleton(options);
 
         services.AddSingleton<SignalRConnectorService>();
+
+        services.AddSingleton<LocalizationService>();
 
         services.BuildServiceProvider().GetRequiredService<SignalRConnectorService>();
 
