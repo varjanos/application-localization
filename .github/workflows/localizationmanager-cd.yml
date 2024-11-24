@@ -29,7 +29,7 @@ jobs:
         with:
           files: './LocalizationManager/LocalizationManager.API/appsettings.json'
         env:
-          ConnectionStrings.DbContext: ${{ secrets.LOCALIZATIONMANAGER_CONNECTIONSTRING }}
+          ConnectionStrings.DefaultConnection: ${{ secrets.LOCALIZATIONMANAGER_CONNECTIONSTRING }}
           Jwt.Key: ${{ secrets.JWT_KEY }}
 
       - name: Set Environment to '${{ env.ASPNETCORE_ENVIRONMENT }}'
