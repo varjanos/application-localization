@@ -1,24 +1,23 @@
 ﻿@using System.Globalization
 @inject NavigationManager navigate
-@using LocalizationManagerSDK.Services
-@using Microsoft.Extensions.Localization
 @using System.Reflection
+@using LocalizationManagerSDK.Services
 @inject LocalizationService service
 
 
 <div>
     <select @onchange="ChangeCulture">
-        <option value="en-US" selected="@IsSelected("en-US")">@service.GetString("LanguageEN")</option>
-        <option value="hu-HU" selected="@IsSelected("hu-HU")">@service.GetString("LanguageHU")</option>
+        <option value="en" selected="@IsSelected("en")">@service.GetString("LanguageEN")</option>
+        <option value="hu" selected="@IsSelected("hu")">@service.GetString("LanguageHU")</option>
     </select>
 </div>
 
 @code {
-    private string selectedCulture = "en-US";
+    private string selectedCulture = "en";
 
     protected override void OnInitialized()
     {
-        service.OnLanguageChanged += RefreshUI;
+        //service.OnLanguageChanged += RefreshUI;
         selectedCulture = service.CurrentCulture;
     }
 

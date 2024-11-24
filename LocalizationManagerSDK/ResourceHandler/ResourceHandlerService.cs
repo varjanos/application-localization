@@ -7,7 +7,7 @@ namespace LocalizationManagerSDK.ResourceHandler;
 
 public class ResourceHandlerService : IResourceHandlerService
 {
-    private readonly LocalizationService _localizationService;
+    private LocalizationService _localizationService;
     public ResourceHandlerService(LocalizationService localizationService)
     {
         _localizationService = localizationService;
@@ -34,14 +34,6 @@ public class ResourceHandlerService : IResourceHandlerService
     {
         Console.WriteLine("Received Localizations Dictionary, values: ");
 
-        foreach (var dict in dictionary)
-        {
-            Console.WriteLine($"[{dict.Key}]:");
-
-            foreach(var item in dict.Value)
-            {
-                Console.WriteLine($"\t[{dict.Key}]: [{dict.Value}]");
-            }
-        }
+        _localizationService.AddList(dictionary);
     }
 }
