@@ -52,6 +52,11 @@ public class SignalRConnectorService : IAsyncDisposable
 
     private void RegisterMessageHandlers()
     {
+        _connection.On<Dictionary<string, Dictionary<string, string>>>("SendAllLocalizations", dict =>
+        {
+            // TODO
+        });
+
         _connection.On<string, string, string>("SendLocalizationAdded", (language, key, value) =>
         {
             _resourceHandlerService.HandleLocalizationAdded(language, key, value);

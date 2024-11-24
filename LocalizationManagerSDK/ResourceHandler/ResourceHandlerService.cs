@@ -5,12 +5,11 @@ using System.Resources;
 namespace LocalizationManagerSDK.ResourceHandler;
 
 public class ResourceHandlerService(
-    LocalizationOptions localizationOptions,
-    CustomStringLocalizer _localizer) : IResourceHandlerService
+    LocalizationOptions localizationOptions) : IResourceHandlerService
 {
     public void HandleLocalizationAdded(string language, string key, string value)
     {
-        _localizer.HandleLocalizationAdded(language, key, value);
+        Console.WriteLine("TODO");
     }
 
     public void HandleLocalizationUpdated(string language, string key, string value)

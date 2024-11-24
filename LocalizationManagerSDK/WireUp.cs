@@ -20,10 +20,10 @@ public static class WireUp
         services.BuildServiceProvider().GetRequiredService<SignalRConnectorService>();
 
 
-        services.AddSingleton<IStringLocalizerFactory, CustomStringLocalizerFactory>();
+        //services.AddSingleton<IStringLocalizerFactory, CustomStringLocalizerFactory>();
 
-        services.AddSingleton(typeof(IStringLocalizer<>), typeof(CustomStringLocalizer));
+        //services.AddSingleton(typeof(IStringLocalizer<>), typeof(CustomStringLocalizer));
 
-        services.AddSingleton<IUpdateableLocalizer, CustomStringLocalizer>();
+        //services.AddSingleton<IUpdateableLocalizer, CustomStringLocalizer>();
     }
 }

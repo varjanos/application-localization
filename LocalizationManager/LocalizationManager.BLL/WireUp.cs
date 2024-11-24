@@ -2,6 +2,7 @@
 using LocalizationManager.BLL.Authentication;
 using LocalizationManager.BLL.Language;
 using LocalizationManager.BLL.Localization;
+using LocalizationManager.BLL.SdkLocalizer;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LocalizationManager.BLL;
@@ -21,6 +22,7 @@ public static class WireUp
     public static void ConfigureLocalizationService(this IServiceCollection services)
     {
         services.AddScoped<ILocalizationService, LocalizationService>();
+        services.AddScoped<ISdkLocalizerService, SdkLocalizerService>();
     }
 
     public static void ConfigureLanguageService(this IServiceCollection services)

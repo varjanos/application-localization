@@ -15,7 +15,7 @@
 
 <PageTitle>Localizations</PageTitle>
 
-<MudTable T="LocalizationValueDto" Items="_localizationValues" Dense Bordered Striped>
+<MudTable T="LocalizationValueDto" Items="_localizationValues" Dense Bordered Striped Loading="IsLoading">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Localization Values</MudText>
 
@@ -67,6 +67,8 @@
 
     private string selectedAppId = null!;
 
+    private bool IsLoading = false;
+
     protected override async Task OnInitializedAsync()
     {
         _registeredApplications = await ApplicationClient.GetRegisteredApplicationsAsync();
@@ -84,9 +86,13 @@
     {
         if (string.IsNullOrEmpty(selectedAppId)) { return; }
 
+        IsLoading = true;
+
         _localizationValues = await LocalizationClient.GetLocalizationValuesAsync(selectedAppId);
 
         _localizationValues.OrderBy(x => x.Key).ThenBy(x => x.LanguageCode).ToList();
+
+        IsLoading = false;
 
         StateHasChanged();
     }
@@ -101,6 +107,8 @@
     private async Task AddLocalizationValue()
     {
         var parameters = new DialogParameters<AddOrEditLocalizationComponent>();
+
+        parameters.Add(x => x.ApplicationDto, _registeredApplications.Single(x => x.AppId == selectedAppId));
 
         var result = await (await DialogService.ShowAsync<AddOrEditLocalizationComponent>(
             "Add new localization value",
@@ -135,6 +143,6 @@
         if (!(result.HasValue && result.Value))
             return;
 
-        // TODO
+        await LoadDataAsync();
     }
 }
