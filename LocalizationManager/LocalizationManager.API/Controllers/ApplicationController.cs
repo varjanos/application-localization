@@ -7,7 +7,7 @@ namespace LocalizationManager.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class ApplicationController(IApplicationManagingService _applicationManagingService) : ControllerBase
 {
     [HttpGet]

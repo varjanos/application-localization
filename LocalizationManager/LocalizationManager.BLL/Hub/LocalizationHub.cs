@@ -30,10 +30,16 @@ public class LocalizationHub(
 
             _logger.LogInformation("Client with id: {appId}, connectionId: {connectionId} successfully connected!", applicationDto.AppId, Context.ConnectionId);
 
-            var data = await _sdkLocalizerService.GetLocalizationsAsync(applicationDto.AppId);
+            try
+            {
+                var dictionary = await _sdkLocalizerService.GetLocalizationsAsync(applicationDto.AppId);
 
-            await Clients.Caller.SendAllLocalizations(data);
+                await Clients.Caller.SendAllLocalizations(dictionary);
 
+            } catch(Exception ex)
+            {
+                _logger.LogError($"Failed to retrieve previous localizations for app: {applicationDto.AppId}");
+            }
         } catch(Exception)
         {
             _logger.LogInformation("Client with connectionId: {connectionId} failed to connect!", Context.ConnectionId);

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LocalizationManager.DAL.Entities.Language">
+    <Position X="7.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Entities\Language.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LocalizationManager.DAL.Entities.LocalizationValue">
+    <Position X="4" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAQEAAA=</HashCode>
+      <FileName>Entities\LocalizationValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LocalizationManager.DAL.Entities.RegisteredApplication">
+    <Position X="4" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACACAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Entities\RegisteredApplication.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LocalizationManager.DAL.Entities.User">
+    <Position X="7.5" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

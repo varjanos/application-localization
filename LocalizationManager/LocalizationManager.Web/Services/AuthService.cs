@@ -14,7 +14,8 @@ public class AuthService(
     AuthenticationStateProvider _authenticationStateProvider,
     ILocalStorageService _localStorage) : IAuthService
 {
-    private readonly string tokenLocalStorageName = "authToken";
+    public static readonly string tokenLocalStorageName = "authToken";
+
     public async Task LoginAsync(LoginDto loginModel)
     {
         var token = await _authenticationClient.LoginAsync(loginModel);

@@ -1,4 +1,5 @@
-﻿using LocalizationManagerSDK.Localizer;
+﻿using LocalizationManagerSDK.Abstractions;
+using LocalizationManagerSDK.Localizer;
 using LocalizationManagerSDK.Options;
 using System.Resources;
 
@@ -9,12 +10,12 @@ public class ResourceHandlerService(
 {
     public void HandleLocalizationAdded(string language, string key, string value)
     {
-        Console.WriteLine("TODO");
+        Console.WriteLine($"{nameof(HandleLocalizationAdded)} called, received: [{language} - {key}: {value}]!");
     }
 
     public void HandleLocalizationUpdated(string language, string key, string value)
     {
-        Console.WriteLine("HandleLocalizationUpdated called!");
+        Console.WriteLine($"{nameof(HandleLocalizationUpdated)} called, received: [{language} - {key}: {value}]!");
 
         string fileName = $"Resource{language}.resx";
         var reader = new ResourceReader(localizationOptions.ResourceFilePath + fileName);
@@ -35,7 +36,7 @@ public class ResourceHandlerService(
 
     public void HandleLocalizationDeleted(string language, string key)
     {
-        Console.WriteLine("HandleLocalizationDeleted called!");
+        Console.WriteLine($"{nameof(HandleLocalizationDeleted)} called, received: [{language} - {key}]!");
 
         string fileName = $"Resource{language}.resx";
         var reader = new ResourceReader(localizationOptions.ResourceFilePath + fileName);
@@ -51,5 +52,20 @@ public class ResourceHandlerService(
         }
         writer.Generate();
         writer.Close();
+    }
+
+    public void HandleAllLocalizationReceived(Dictionary<string, Dictionary<string, string>> dictionary)
+    {
+        Console.WriteLine("Received Localizations Dictionary, values: ");
+
+        foreach (var dict in dictionary)
+        {
+            Console.WriteLine($"[{dict.Key}]:");
+
+            foreach(var item in dict.Value)
+            {
+                Console.WriteLine($"\t[{dict.Key}]: [{dict.Value}]");
+            }
+        }
     }
 }

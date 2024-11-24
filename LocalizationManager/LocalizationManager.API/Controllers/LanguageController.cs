@@ -7,7 +7,7 @@ namespace LocalizationManager.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class LanguageController(ILanguageService _languageService) : ControllerBase
 {
     [HttpGet("all-languages")]
