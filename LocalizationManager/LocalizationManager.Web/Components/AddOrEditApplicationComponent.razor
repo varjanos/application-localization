@@ -4,6 +4,7 @@
 
 @inject ILanguageClient LanguageClient
 @inject IApplicationClient ApplicationClient
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <DialogContent>
@@ -93,11 +94,29 @@
 
         if (IsEdit)
         {
-            await ApplicationClient.UpdateApplicationAsync(application);
+            try
+            {
+                await ApplicationClient.UpdateApplicationAsync(application);
+
+                Snackbar.Add("Successfully updated application!", Severity.Success);
+            }
+            catch (Exception)
+            {
+                Snackbar.Add("Failed to update application!", Severity.Error);
+            }
         }
         else
         {
-            await ApplicationClient.RegisterApplicationAsync(application);
+            try
+            {
+                await ApplicationClient.RegisterApplicationAsync(application);
+
+                Snackbar.Add("Successfully registered application!", Severity.Success);
+            }
+            catch (Exception)
+            {
+                Snackbar.Add("Failed to register application!", Severity.Error);
+            }
         }
 
         MudDialog.Close(application);
