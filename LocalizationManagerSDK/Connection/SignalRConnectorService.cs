@@ -16,7 +16,6 @@ public class SignalRConnectorService : IAsyncDisposable
         ArgumentException.ThrowIfNullOrEmpty(localizationOptions.ManagerUrl);
         ArgumentException.ThrowIfNullOrEmpty(localizationOptions.AppName);
         ArgumentException.ThrowIfNullOrEmpty(localizationOptions.AppId);
-        ArgumentException.ThrowIfNullOrEmpty(localizationOptions.ResourceFilePath);
 
         _resourceHandlerService = resourceHandlerService;
 
@@ -54,7 +53,7 @@ public class SignalRConnectorService : IAsyncDisposable
     {
         _connection.On<Dictionary<string, Dictionary<string, string>>>("SendAllLocalizations", dict =>
         {
-            _resourceHandlerService.HandleLocalizationDictReceived(dict);
+            _resourceHandlerService.HandleAllLocalizationReceived(dict);
         });
 
         _connection.On<string, string, string>("SendLocalizationAdded", (language, key, value) =>

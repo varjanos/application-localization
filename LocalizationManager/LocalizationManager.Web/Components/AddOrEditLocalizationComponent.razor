@@ -3,6 +3,7 @@
 @using LocalizationManager.Web.Client
 
 @inject ILocalizationClient LocalizationClient
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <DialogContent>
@@ -13,7 +14,7 @@
                 </MudItem>
 
                 <MudItem xs="6">
-                    <MudSelect @bind-Value="_localizationValueDto.LanguageCode" Label="Language" MultiSelection="false" Variant="Variant.Outlined" Required="true">
+                    <MudSelect @bind-Value="_localizationValueDto.LanguageCode" Label="Language" MultiSelection="false" Disabled="IsEdit" Variant="Variant.Outlined" Required="true">
                         @foreach (var language in ApplicationDto.SupportedLanguages)
                         {
                             <MudSelectItem Value="@language">@language</MudSelectItem>
@@ -22,7 +23,7 @@
                 </MudItem>
 
                 <MudItem xs="12">
-                    <MudTextField @bind-Value="_localizationValueDto.Key" Label="Key" Variant="Variant.Outlined" Required="true" />
+                    <MudTextField @bind-Value="_localizationValueDto.Key" Label="Key" Variant="Variant.Outlined" Disabled="IsEdit" Required="true" />
                 </MudItem>
                 
                 <MudItem xs="12">
@@ -83,11 +84,29 @@
         {
             if (IsEdit)
             {
-                await LocalizationClient.UpdateLocalizationValueAsync(_localizationValueDto);
+                try
+                {
+                    await LocalizationClient.UpdateLocalizationValueAsync(_localizationValueDto);
+
+                    Snackbar.Add("Successfully updated localization!", Severity.Success);
+                }
+                catch (Exception)
+                {
+                    Snackbar.Add("Failed to update localization!", Severity.Error);
+                }
             }
             else
             {
-                await LocalizationClient.AddLocalizationValueAsync(_localizationValueDto);
+                try
+                {
+                    await LocalizationClient.AddLocalizationValueAsync(_localizationValueDto);
+
+                    Snackbar.Add("Successfully added localization!", Severity.Success);
+                }
+                catch (Exception)
+                {
+                    Snackbar.Add("Failed to add localization!", Severity.Error);
+                }
             }
 
             MudDialog.Close(DialogResult.Ok(_localizationValueDto));

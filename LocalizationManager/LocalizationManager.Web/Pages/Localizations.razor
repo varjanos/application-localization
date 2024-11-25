@@ -10,6 +10,7 @@
 @inject ILocalizationClient LocalizationClient
 @inject IApplicationClient ApplicationClient
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 @attribute [Authorize]
 
@@ -88,9 +89,16 @@
 
         IsLoading = true;
 
-        _localizationValues = await LocalizationClient.GetLocalizationValuesAsync(selectedAppId);
+        try
+        {
+            _localizationValues = await LocalizationClient.GetLocalizationValuesAsync(selectedAppId);
 
-        _localizationValues.OrderBy(x => x.Key).ThenBy(x => x.LanguageCode).ToList();
+            _localizationValues.OrderBy(x => x.Key).ThenBy(x => x.LanguageCode).ToList();
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to load localizations!", Severity.Error);
+        }
 
         IsLoading = false;
 
@@ -144,7 +152,16 @@
         if (!(result.HasValue && result.Value))
             return;
 
-        await LocalizationClient.DeleteLocalizationValueAsync(item);
+        try
+        {
+            await LocalizationClient.DeleteLocalizationValueAsync(item);
+
+            Snackbar.Add("Successfully deleted localization!", Severity.Success);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to delete localization!", Severity.Error);
+        }
 
         await LoadDataAsync();
     }

@@ -72,9 +72,9 @@ namespace LocalizationManager.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AppId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LanguageCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    LanguageCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -88,8 +88,8 @@ namespace LocalizationManager.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AppId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    AppName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     SupportedLanguages = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -431,6 +431,18 @@ namespace LocalizationManager.DAL.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LocalizationValues_AppId_LanguageCode_Key",
+                table: "LocalizationValues",
+                columns: new[] { "AppId", "LanguageCode", "Key" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RegisteredApplications_AppId",
+                table: "RegisteredApplications",
+                column: "AppId",
+                unique: true);
         }
 
         /// <inheritdoc />

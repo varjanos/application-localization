@@ -8,6 +8,7 @@
 
 @inject IApplicationClient ApplicationClient
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 @attribute [Authorize]
 
@@ -68,7 +69,14 @@
     {
         IsLoading = true;
 
-        _applications = await ApplicationClient.GetRegisteredApplicationsAsync();
+        try
+        {
+            _applications = await ApplicationClient.GetRegisteredApplicationsAsync();
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to load data", Severity.Error);
+        }
 
         IsLoading = false;
 
@@ -112,7 +120,16 @@
         if (!(result.HasValue && result.Value))
             return;
 
-        await ApplicationClient.DeleteApplicationAsync(dto);
+        try
+        {
+            await ApplicationClient.DeleteApplicationAsync(dto);
+
+            Snackbar.Add("Successfully deleted application!", Severity.Success);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to delete application!", Severity.Error);
+        }
 
         await LoadDataAsync();
     }

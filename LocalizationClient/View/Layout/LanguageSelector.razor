@@ -1,0 +1,35 @@
+﻿@using System.Globalization
+@inject NavigationManager navigate
+@using System.Reflection
+@using LocalizationManagerSDK.Services
+@inject LocalizationService service
+
+
+<div>
+    <select @onchange="ChangeCulture">
+        <option value="en" selected="@IsSelected("en")">@service.GetString("LanguageEN")</option>
+        <option value="hu" selected="@IsSelected("hu")">@service.GetString("LanguageHU")</option>
+    </select>
+</div>
+
+@code {
+    private string selectedCulture = "en";
+
+    protected override void OnInitialized()
+    {
+        //service.OnLanguageChanged += RefreshUI;
+        selectedCulture = service.CurrentCulture;
+    }
+
+    private void ChangeCulture(ChangeEventArgs e)
+    {
+        selectedCulture = e.Value.ToString();
+        service.SetCulture(selectedCulture);
+        navigate.NavigateTo(navigate.Uri, forceLoad: true);
+    }
+    private void RefreshUI()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+    private bool IsSelected(string culture) => selectedCulture == culture;
+}

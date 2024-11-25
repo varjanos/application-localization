@@ -1,36 +1,18 @@
 ﻿@inherits LayoutComponentBase
-@using LocalizationClient.Services
 @inject NavigationManager navigate
+@using System.Globalization
+@using LocalizationManagerSDK.Services
+@inject LocalizationService service
 
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
     <main>
-        @if (UserService.loggedInUser == null)
-        {
-            <div class="top-row px-4">
-                <label for="languages">Choose a language </label>&nbsp;
-                <select name="languages" id="languages">
-                    <option value="english">English</option>
-                    <option value="hungarian">Hungarian</option>
-                </select>
-                <a href="register">Register</a>
-                <a href="Login" onclick="location.href='Login'">Login</a>
-            </div>
-        }
-       else
-       {
-           <div class="top-row px-4">
-                <label for="languages">Choose a language </label>&nbsp;
-                <select name="languages" id="languages">
-                    <option value="english">English</option>
-                    <option value="hungarian">Hungarian</option>
-                </select>&nbsp;
-                <label for="loggedInUser">@UserService.loggedInUser.Username</label>
-                <a href="/">Logout</a>
-           </div>
-       }
+         <div class="top-row px-4">
+            <label>@service.GetString("ChangeLanguage")</label>&nbsp;
+            <LanguageSelector/>
+        </div>
         <article class="content px-4">
             @Body
         </article>

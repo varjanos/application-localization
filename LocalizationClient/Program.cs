@@ -1,24 +1,25 @@
 using LocalizationClient.View;
-using LocalizationClient.ViewModels;
+using Microsoft.Extensions.Localization;
+using LocalizationManagerSDK;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddScoped<LoginViewModel>();
-builder.Services.AddScoped<RegisterViewModel>();
-builder.Services.AddScoped<LocalDateViewModel>();
-builder.Services.AddLocalization();
+
+builder.Services.AddControllers();
+var LocalizationManagerSDKOptions = new LocalizationManagerSDK.Options.LocalizationOptions()
+{
+    ManagerUrl = builder.Configuration.GetSection("LocalizationOptions").GetSection("ManagerUrl").Value,
+    AppName = builder.Configuration.GetSection("LocalizationOptions").GetSection("AppName").Value,
+    AppId = builder.Configuration.GetSection("LocalizationOptions").GetSection("AppId").Value,
+    SupportedLanguages = builder.Configuration.GetSection("LocalizationOptions").GetSection("SupportedLanguages").Value
+};
+
+builder.Services.RegisterLocalizationManager(LocalizationManagerSDKOptions);
 
 var app = builder.Build();
-
-string[] appCultures = ["en-UK", "h-Hun"];
-var localizationOptions = new RequestLocalizationOptions()
-    .SetDefaultCulture(appCultures[0])
-    .AddSupportedCultures(appCultures)
-    .AddSupportedUICultures(appCultures);
-app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -32,6 +33,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.MapControllers();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
