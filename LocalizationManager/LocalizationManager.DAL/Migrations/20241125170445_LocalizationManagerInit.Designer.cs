@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocalizationManager.DAL.Migrations
 {
     [DbContext(typeof(LocalizationDbContext))]
-    [Migration("20241124003237_LocalizationManagerInit")]
+    [Migration("20241125170445_LocalizationManagerInit")]
     partial class LocalizationManagerInit
     {
         /// <inheritdoc />
@@ -1156,21 +1156,27 @@ namespace LocalizationManager.DAL.Migrations
 
                     b.Property<string>("AppId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppId", "LanguageCode", "Key")
+                        .IsUnique();
 
                     b.ToTable("LocalizationValues");
                 });
@@ -1185,17 +1191,22 @@ namespace LocalizationManager.DAL.Migrations
 
                     b.Property<string>("AppId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("AppName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("SupportedLanguages")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppId")
+                        .IsUnique();
 
                     b.ToTable("RegisteredApplications");
                 });

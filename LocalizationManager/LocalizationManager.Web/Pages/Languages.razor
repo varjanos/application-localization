@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Authorization
 
 @inject ILanguageClient LanguageClient
+@inject ISnackbar Snackbar
 
 @attribute [Authorize]
 
@@ -29,6 +30,15 @@
 
     protected override async Task OnInitializedAsync()
     {
+        try
+        {
+            _languages = await LanguageClient.GetAllLanguagesAsync();
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to load languages!", Severity.Error);
+        }
+
         _languages = await LanguageClient.GetAllLanguagesAsync();
 
         await base.OnInitializedAsync();

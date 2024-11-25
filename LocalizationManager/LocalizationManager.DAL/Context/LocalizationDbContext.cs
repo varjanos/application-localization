@@ -1,4 +1,5 @@
-﻿using LocalizationManager.DAL.Entities;
+﻿using LocalizationManager.DAL.Configuration;
+using LocalizationManager.DAL.Entities;
 using LocalizationManager.DAL.Seed;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,9 @@ public class LocalizationDbContext(DbContextOptions<LocalizationDbContext> optio
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.ApplyConfiguration(new LocalizationConfiguration());
+        builder.ApplyConfiguration(new RegisteredApplicationConfiguration());
 
         LanguageSeed.SeedLanguages(builder);
     }
