@@ -1,5 +1,4 @@
 using LocalizationClient.View;
-using Microsoft.Extensions.Localization;
 using LocalizationManagerSDK;
 
 var builder = WebApplication.CreateBuilder(args);
