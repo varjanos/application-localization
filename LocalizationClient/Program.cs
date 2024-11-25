@@ -9,15 +9,12 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddControllers();
-var LocalizationManagerSDKOptions = new LocalizationManagerSDK.Options.LocalizationOptions()
-{
-    ManagerUrl = builder.Configuration.GetSection("LocalizationOptions").GetSection("ManagerUrl").Value,
-    AppName = builder.Configuration.GetSection("LocalizationOptions").GetSection("AppName").Value,
-    AppId = builder.Configuration.GetSection("LocalizationOptions").GetSection("AppId").Value,
-    SupportedLanguages = builder.Configuration.GetSection("LocalizationOptions").GetSection("SupportedLanguages").Value
-};
 
-builder.Services.RegisterLocalizationManager(LocalizationManagerSDKOptions);
+var LocalizationManagerSDKOptions = builder.Configuration.GetSection("LocalizationOptions")
+    .Get<LocalizationManagerSDK.Options.LocalizationOptions>()
+    ?? throw new Exception("Unable to load LocalizationOptions");
+
+builder.Services.RegisterLocalizationManager(LocalizationManagerSDKOptions!);
 
 var app = builder.Build();
 
