@@ -8,7 +8,5 @@ public class LocalizationOptions
 
     public string AppId { get; set; } = null!;
 
-    public string ResourceFilePath { get; set; } = null!;
-
     public string SupportedLanguages { get; set; } = null!;
 }

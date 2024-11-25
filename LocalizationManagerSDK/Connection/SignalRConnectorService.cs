@@ -16,7 +16,6 @@ public class SignalRConnectorService : IAsyncDisposable
         ArgumentException.ThrowIfNullOrEmpty(localizationOptions.ManagerUrl);
         ArgumentException.ThrowIfNullOrEmpty(localizationOptions.AppName);
         ArgumentException.ThrowIfNullOrEmpty(localizationOptions.AppId);
-        ArgumentException.ThrowIfNullOrEmpty(localizationOptions.ResourceFilePath);
 
         _resourceHandlerService = resourceHandlerService;
 

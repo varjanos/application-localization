@@ -6,9 +6,5 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Resource.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
+  <ItemGroup />
 </Project>
