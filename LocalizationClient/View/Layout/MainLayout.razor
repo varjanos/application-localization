@@ -1,10 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigate
 @using System.Globalization
-@using Microsoft.Extensions.Localization
-@using LocalizationClient.Resources
-@inject IStringLocalizer<Resource> Localizer
-
+@using LocalizationManagerSDK.Services
+@inject LocalizationService service
 
 <div class="page">
     <div class="sidebar">
@@ -12,8 +10,8 @@
     </div>
     <main>
          <div class="top-row px-4">
-            <label>@Localizer["ChangeLanguage"]</label>&nbsp;
-            <LanguageSelector />
+            <label>@service.GetString("ChangeLanguage")</label>&nbsp;
+            <LanguageSelector/>
         </div>
         <article class="content px-4">
             @Body

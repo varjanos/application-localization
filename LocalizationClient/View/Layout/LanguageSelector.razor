@@ -1,42 +1,35 @@
 ﻿@using System.Globalization
 @inject NavigationManager navigate
-@using Microsoft.Extensions.Localization
-@using LocalizationClient.Resources
-@using System.Resources
 @using System.Reflection
-@inject IStringLocalizer<Resource> Localizer
+@using LocalizationManagerSDK.Services
+@inject LocalizationService service
 
 
 <div>
-    <select @bind="Culture">
-        <option value="hu">@Localizer["LanguageHU"]</option>
-        <option value="en">@Localizer["LanguageEN"]</option>
+    <select @onchange="ChangeCulture">
+        <option value="en" selected="@IsSelected("en")">@service.GetString("LanguageEN")</option>
+        <option value="hu" selected="@IsSelected("hu")">@service.GetString("LanguageHU")</option>
     </select>
 </div>
 
-@code
-{
+@code {
+    private string selectedCulture = "en";
+
     protected override void OnInitialized()
     {
-        Culture = CultureInfo.CurrentCulture;
+        //service.OnLanguageChanged += RefreshUI;
+        selectedCulture = service.CurrentCulture;
     }
 
-    private CultureInfo Culture
+    private void ChangeCulture(ChangeEventArgs e)
     {
-        get
-        {
-            return CultureInfo.CurrentCulture;
-        }
-        set
-        {
-            if (CultureInfo.CurrentCulture != value)
-            {
-                var uri = new Uri(navigate.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-                var cultureEscaped = Uri.EscapeDataString(value.Name);
-                var uriEscaped = Uri.EscapeDataString(uri);
-
-                navigate.NavigateTo($"Localization/Set?culture={cultureEscaped}&redirectUri={uriEscaped}", forceLoad: true);
-            }
-        }
+        selectedCulture = e.Value.ToString();
+        service.SetCulture(selectedCulture);
+        navigate.NavigateTo(navigate.Uri, forceLoad: true);
     }
+    private void RefreshUI()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+    private bool IsSelected(string culture) => selectedCulture == culture;
 }
